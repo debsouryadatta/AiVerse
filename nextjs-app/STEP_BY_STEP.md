@@ -78,15 +78,20 @@
 - #10 - [[FEAT]: Separate the course generation logic into the FastApi service using langchain python, integrate the whole thing using docker-compose](https://github.com/debsouryadatta/CourseX/issues/10) ✅
 - #11 - [[FEAT]: Create a New Roadmap Generation section, where roadmaps will be generated based on the roadmap title](https://github.com/debsouryadatta/CourseX/issues/11) ✅
 - #12 - [[BUG]: Fix the bug in the course pdf export feature](https://github.com/debsouryadatta/CourseX/issues/12) ✅
+- #13 - [[MOD]: Create the new UI for the explore page which will have the banner and the 3tabs containing the posts, courses and roadmaps](https://github.com/debsouryadatta/CourseX/issues/13)
 
 
 
 
 
-### Planning
-- The above was about v0.1
-- From now there will be 2 branches, main and dev
-- Main will be the stable version, dev will be the development version(After major changes, we will be merging the dev into main)
+### v0.3 Planning
+- Revamp UI, Explore page - Posts, Courses
+- Create page - For posts, courses
+- Show page for - Posts, Courses
+- Tools - Roadmaps generations, chat with pdf, voice mentor
+- Search - three tabs - posts, course, people
+- Bookmarks page - three tabs - saved posts, saved courses, saved roadmaps
+- Settings page/credits page -> different ai support -> different credits(One time Stripe payment for absolute credits)
 
 
 ### Features Planning
