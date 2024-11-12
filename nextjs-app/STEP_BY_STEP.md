@@ -78,38 +78,24 @@
 - #10 - [[FEAT]: Separate the course generation logic into the FastApi service using langchain python, integrate the whole thing using docker-compose](https://github.com/debsouryadatta/CourseX/issues/10) ✅
 - #11 - [[FEAT]: Create a New Roadmap Generation section, where roadmaps will be generated based on the roadmap title](https://github.com/debsouryadatta/CourseX/issues/11) ✅
 - #12 - [[BUG]: Fix the bug in the course pdf export feature](https://github.com/debsouryadatta/CourseX/issues/12) ✅
-- #13 - [[MOD]: Create the new UI for the explore page which will have the banner and the 3tabs containing the posts, courses and roadmaps](https://github.com/debsouryadatta/CourseX/issues/13)
+- #13 - [[FEAT]: Create the new UI for the explore page. Posts table creation with explore posts page, post page and create post page](https://github.com/debsouryadatta/CourseX/issues/13)
+- #14 - [[MOD]: Update the search page including the search posts result tab](https://github.com/debsouryadatta/CourseX/issues/14)
 
 
 
 
 
 ### v0.3 Planning
-- Revamp UI, Explore page - Posts, Courses
-- Create page - For posts, courses
-- Show page for - Posts, Courses
-- Tools - Roadmaps generations, chat with pdf, voice mentor
-- Search - three tabs - posts, course, people
-- Bookmarks page - three tabs - saved posts, saved courses, saved roadmaps
-- Settings page/credits page -> different ai support -> different credits(One time Stripe payment for absolute credits)
+- Pages:
+- Explore page - User Posts, Generated Courses, Quizes
+- Search page - Find users, posts, courses, quizes
+- Create page - User Posts, Generated Courses, Quizes
+- Ai Tools page - Roadmap generator, Voice mentor, Chat with site, Chat with pdf, Ai agents
+- Bookmarks page - User Posts, Generated Courses, Quizes
+- Profile page -
+- Settings page - Different ai support -> different credits(One time Stripe payment for absolute credits)
 
 
-### Features Planning
-- Chat with PDF feature
-- Roadmap generation feature
-- Summarise chapter page, ask from chapter's page
-- Real time quiz feature with quiz generation
-- Everything on coin based system(Generations + Quizzes)
-- Accepting both stripe as well as crypto payments for buying coins
-- Chat, call, video call feature
-
-
-
-- Weekly quizzes 
-    - Quizzes will be generated automatically using AI when the previous quiz ends, users can join the quiz till the next week until it starts
-    - Conducting the quiz and calculate results on centralized server, Recording the final results and distribute rewards/tokens on the blockchain
-    - Allow all users to take quizzes without connecting a wallet, Prompt users to connect a wallet before or after the quiz to claim token rewards, Store potential rewards for a limited time, allowing users to claim them later by connecting a wallet
-    - All the above stuff will be in auto pilot mode, no manual intervention required
   
 
 

@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import SubscriptionAction from "./SubscriptionAction";
 import { useSession } from "next-auth/react";
 
-export function InputBox() {
+export function GenerateCourse() {
   const [courseTitle, setCourseTitle] = useState("");
   const [chapters, setChapters] = useState([{ id: 1, title: "" }]);
   const [files, setFiles] = useState<File[]>([]);

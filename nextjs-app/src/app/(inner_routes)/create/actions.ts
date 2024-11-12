@@ -144,3 +144,20 @@ export const checkSubscriptionAction = async(userId: string) => {
         throw error;
     }
 }
+
+export async function createPostAction(userId: string, caption: string, mediaUrl: string, mediaType: string) {
+  try {
+    const post = await prisma.post.create({
+      data: {
+        userId,
+        caption,
+        mediaUrl,
+        mediaType,
+      },
+    });
+    return post;
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw error;
+  }
+}

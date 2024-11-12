@@ -2,20 +2,25 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SearchResults from "./SearchResults";
-import { CourseWithUser, User } from "@/types";
+import { CourseWithUser, ExplorePost, User } from "@/types";
+import PostResults from "./PostResults";
 
-export default function SearchTabs({courses, profiles}: {courses: CourseWithUser[], profiles: User[]}) {
+export default function SearchTabs({courses, posts, profiles}: {courses: CourseWithUser[], posts: ExplorePost[], profiles: User[]}) {
   return (
     <div className="mt-10 w-[300px] sm:w-[600px] lg:w-[900px]">
-      <Tabs defaultValue="account" className="w-[300px] sm:w-[600px] lg:w-[900px]">
-        <TabsList>
-          <TabsTrigger value="account">Courses</TabsTrigger>
-          <TabsTrigger value="password">Profiles</TabsTrigger>
+      <Tabs defaultValue="courses" className="flex flex-col justify-center items-center">
+        <TabsList className="flex justify-center items-center bg-zinc-400 text-black dark:bg-zinc-800 dark:text-white">
+          <TabsTrigger className="w-48" value="courses">Courses</TabsTrigger>
+          <TabsTrigger className="w-48" value="posts">Posts</TabsTrigger>
+          <TabsTrigger className="w-48" value="profiles">Profiles</TabsTrigger>
         </TabsList>
-        <TabsContent value="account">
+        <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="courses">
           <SearchResults courses={courses} />
         </TabsContent>
-        <TabsContent value="password">
+        <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="posts">
+          <PostResults posts={posts} />
+        </TabsContent>
+        <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="profiles">
         <SearchResults profiles={profiles} />
         </TabsContent>
       </Tabs>

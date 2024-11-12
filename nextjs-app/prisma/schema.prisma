@@ -29,6 +29,7 @@ model User {
   followers Follow[]   @relation("UserFollowers")
   following Follow[]   @relation("UserFollowing")
   roadmaps   Roadmap[]
+  posts      Post[]
 }
 
 model Account {
@@ -121,40 +122,68 @@ model Chapter {
 }
 
 model Like {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   userId   String
-  courseId String
+  courseId String?
+  postId   String?
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  post     Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@index([userId], name: "userId2")
-  @@index([courseId], name: "courseId2")
+  @@unique([userId, courseId], name: "unique_course_like")
+  @@unique([userId, postId], name: "unique_post_like")
+  @@index([userId])
+  @@index([courseId])
+  @@index([postId])
 }
 
 model Comment {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   userId   String
-  courseId String
+  courseId String?
+  postId   String?
   text     String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  post     Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 
-  @@index([userId], name: "userId3")
-  @@index([courseId], name: "courseId3")
+  @@index([userId])
+  @@index([courseId])
+  @@index([postId])
 }
 
 model Bookmark {
   id        String   @id @default(cuid())
   userId    String
-  courseId  String
+  courseId  String?
+  postId    String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course    Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
-  @@unique([userId, courseId], name: "user_course_unique")
-  @@index([userId], name: "userId4")
-  @@index([courseId], name: "courseId4")
+  @@unique([userId, courseId], name: "unique_course_bookmark")
+  @@unique([userId, postId], name: "unique_post_bookmark")
+  @@index([userId])
+  @@index([courseId])
+  @@index([postId])
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  userId      String
+  caption     String?
+  mediaUrl    String     // URL for image or video
+  mediaType   String     // "image" or "video"
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  likes       Like[]
+  comments    Comment[]
+  bookmarks   Bookmark[]
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // Follower -> The one who follows

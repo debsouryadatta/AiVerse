@@ -3,25 +3,26 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input2";
-import { AvatarComp } from "./CourseDetail";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { text } from "stream/consumers";
 import {
   addCommentAction,
   deleteCommentAction,
   getCommentsAction,
-} from "@/app/(inner_routes)/course/[...slug]/actions";
+} from "@/app/(inner_routes)/post/[...slug]/actions";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { EllipsisVertical } from "lucide-react";
-import { CommentOptions } from "./CommentOptions";
+import { CommentOptions } from "../course/CommentOptions";
 
-export default function CommentSec({
-  author,
-  course,
-}: {
+type CommentSecProps = {
   author: any;
-  course: any;
-}) {
+  post: any;
+  onCommentAdd: () => void;
+  onCommentDelete: () => void;
+}
+
+export default function CommentSec({ author, post, onCommentAdd, onCommentDelete }: CommentSecProps) {
   const commentRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [comments, setComments] = useState<any[]>([]);
@@ -30,7 +31,7 @@ export default function CommentSec({
 
   const getComments = async () => {
     try {
-      const res: any = await getCommentsAction(course.id);
+      const res: any = await getCommentsAction(post.id);
       console.log("Comments", res);
       
       setComments(res);
@@ -40,30 +41,31 @@ export default function CommentSec({
     }
   };
 
-  const addComment = async () => {
-    
+  const handleAddComment = async () => {
     try {
       setInputValue("");
       if (!session?.data?.user) return toast("Please login to comment");
       const res: any = await addCommentAction(
         session?.data?.user?.id!,
-        course.id,
+        post.id,
         inputValue
       );
       await getComments();
       toast("Comment added successfully");
+      onCommentAdd();
     } catch (error) {
       console.log("Error", error);
       toast("Error adding comment");
     }
   };
 
-  const deleteComment = async (commentId: string) => {
+  const handleDeleteComment = async (commentId: string) => {
     try {
       const res = await deleteCommentAction(commentId);
       const newComments = comments.filter((comment) => comment.id !== commentId);
       setComments(newComments);
       toast("Comment deleted successfully");
+      onCommentDelete();
     } catch (error) {
       console.log("Error", error);
       toast("Error deleting comment");
@@ -112,7 +114,7 @@ export default function CommentSec({
           Cancel
         </Button>
         <Button
-          onClick={addComment}
+          onClick={handleAddComment}
           variant={"outline"}
           size={"sm"}
           className=""
@@ -136,7 +138,7 @@ export default function CommentSec({
           </div>
           {(session?.data?.user && session?.data?.user?.id === comment.userId) && (
           <button>
-            <CommentOptions deleteComment={deleteComment} commentId={comment.id} />
+            <CommentOptions deleteComment={handleDeleteComment} commentId={comment.id} />
           </button>
           )}
         </div>
@@ -144,3 +146,13 @@ export default function CommentSec({
     </div>
   );
 }
+
+
+export function AvatarComp({user}: {user: any}) {
+    return (
+      <Avatar className="w-[40px] h-[40px]">
+        <AvatarImage src={user?.image} />
+        <AvatarFallback>{user?.name[0]}</AvatarFallback>
+      </Avatar>
+    );
+  }

@@ -30,7 +30,8 @@ export interface Course {
 export interface BookmarkCourse {
   id: string;
   userId: string;
-  courseId: string;
-  course: CourseWithUser;
+  courseId: string | null;
+  postId: string | null;
+  course: CourseWithUser | null;
   createdAt: Date;
 }
