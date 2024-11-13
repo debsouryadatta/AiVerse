@@ -6,7 +6,8 @@ export const getBookmarkCoursesAction = async (userId: string) => {
     try {
         const bookmarkCourses = await prisma.bookmark.findMany({
             where: {
-                userId: userId
+                userId: userId,
+                postId: null
             },
             include: {
                 course: {
@@ -23,14 +24,25 @@ export const getBookmarkCoursesAction = async (userId: string) => {
     }
 }
 
-export const getSavedRoadmapsAction = async (userId: string) => {
+export const getBookmarkPostsAction = async (userId: string) => {
     try {
-        let savedRoadmaps = await prisma.roadmap.findMany({
+        const bookmarkPosts = await prisma.bookmark.findMany({
             where: {
-                userId: userId
+                userId: userId,
+                courseId: null
+            },
+            include: {
+                post: {
+                    include: {
+                        user: true,
+                        comments: true,
+                        likes: true,
+                        bookmarks: true
+                    }
+                }
             }
         })
-        return savedRoadmaps;
+        return bookmarkPosts;
     } catch (error) {
         console.log("Error", error);
         throw error;
@@ -42,20 +54,6 @@ export const deleteBookmarkAction = async (bookmarkId: string) => {
         await prisma.bookmark.delete({
             where: {
                 id: bookmarkId
-            }
-        })
-        return true;
-    } catch (error) {
-        console.log("Error", error);
-        throw error;
-    }
-}
-
-export const deleteRoadmapAction = async (roadmapId: string) => {
-    try {
-        await prisma.roadmap.delete({
-            where: {
-                id: roadmapId
             }
         })
         return true;

@@ -26,12 +26,3 @@ export interface Course {
   inviteCode?: string | null;
   mcqs?: any | null;
 }
-
-export interface BookmarkCourse {
-  id: string;
-  userId: string;
-  courseId: string | null;
-  postId: string | null;
-  course: CourseWithUser | null;
-  createdAt: Date;
-}

@@ -1,9 +1,53 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BookmarkCourse, BookmarkPost } from "@/types";
+import { getBookmarkCoursesAction, getBookmarkPostsAction } from "./actions";
+import { useSession } from "next-auth/react";
+import BmCourses from "@/components/bookmarks/BmCourses";
+import BmPosts from "@/components/bookmarks/BmPosts";
+import LoadingComponent from "../loading";
 
 export default function page() {
+  const [bookmarkCourses, setBookmarkCourses] = useState<BookmarkCourse[]>([]);
+  const [bookmarkPosts, setBookmarkPosts] = useState<BookmarkPost[]>([]);
+  const [loading, setLoading] = useState(false);
+  const session = useSession();
+
+  useEffect(() => {
+    const getBookmarkCourses = async () => {
+      setLoading(true);
+      try {
+        const bookmarkCourses = await getBookmarkCoursesAction(session?.data?.user?.id!);
+        console.log("Bookmark Courses", bookmarkCourses);
+        setBookmarkCourses(bookmarkCourses);
+      } catch (error) {
+        console.log("Error", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    const getBookmarkPosts = async () => {
+      setLoading(true);
+      try {
+        const bookmarkPosts = await getBookmarkPostsAction(session?.data?.user?.id!);
+        console.log("Bookmark Posts", bookmarkPosts);
+        setBookmarkPosts(bookmarkPosts);
+      } catch (error) {
+        console.log("Error", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getBookmarkCourses();
+    getBookmarkPosts();
+  }, [])
+
+  if(loading) {
+    return <LoadingComponent/>
+  }
+
   return (
     <div className="min-h-[75vh]">
       <div className="w-full text-white flex flex-col justify-center items-center">
@@ -19,10 +63,10 @@ export default function page() {
           <TabsTrigger className="w-48" value="posts">Posts</TabsTrigger>
         </TabsList>
         <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="courses">
-          {/* <SearchResults courses={courses} /> */}
+          <BmCourses bookmarkCourses={bookmarkCourses} setBookmarkCourses={setBookmarkCourses} />
         </TabsContent>
         <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="posts">
-          {/* <PostResults posts={posts} /> */}
+          <BmPosts bookmarkPosts={bookmarkPosts} setBookmarkPosts={setBookmarkPosts} />
         </TabsContent>
       </Tabs>
       </div>

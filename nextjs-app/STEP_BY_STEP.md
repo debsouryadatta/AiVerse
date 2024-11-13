@@ -80,6 +80,8 @@
 - #12 - [[BUG]: Fix the bug in the course pdf export feature](https://github.com/debsouryadatta/CourseX/issues/12) ✅
 - #13 - [[FEAT]: Create the new UI for the explore page. Posts table creation with explore posts page, post page and create post page](https://github.com/debsouryadatta/CourseX/issues/13)
 - #14 - [[MOD]: Update the search page including the search posts result tab](https://github.com/debsouryadatta/CourseX/issues/14)
+- #15 - [[MOD]: Update the bookmarks page to have only two tabs for showing the saved posts & saved courses](https://github.com/debsouryadatta/CourseX/issues/15)
+- #16 - [[MOD]: Update the profile page to have two tabs for showing the user posts & user generated courses, put delete options beside them. Also remove the delete options in the edit profile drawer](https://github.com/debsouryadatta/CourseX/issues/16)
 
 
 
