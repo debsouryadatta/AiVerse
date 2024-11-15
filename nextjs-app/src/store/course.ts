@@ -1,4 +1,4 @@
-import { CourseWithUser, User } from "@/types";
+import { CourseWithUser } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

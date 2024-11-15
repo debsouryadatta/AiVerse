@@ -11,19 +11,21 @@ import React from "react";
 import EditDialog from "./EditDialog";
 import EditDrawer from "./EditDrawer";
 import { User } from "@/types";
+import { useProfileCoursesStore } from "@/store";
 
 export default function ProfileHeader({
   user,
-  role,
+  slug,
   isUserAlreadyFollowed,
   setIsUserAlreadyFollowed,
 }: {
   user: User | null;
-  role: string;
+  slug: string;
   isUserAlreadyFollowed: boolean;
   setIsUserAlreadyFollowed: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const session = useSession();
+  const { courses } = useProfileCoursesStore();
 
   const followUser = async () => {
     try {
@@ -81,7 +83,7 @@ export default function ProfileHeader({
         </div>
         <ul className="py-4 mt-2 text-gray-700 dark:text-gray-300 text-sm flex items-center justify-around max-w-sm mx-auto">
           <li className="flex flex-col items-center justify-around">
-            20
+            <div>{courses.length}</div>
             <div>Courses</div>
           </li>
           <li className="flex flex-col items-center justify-between">
@@ -92,7 +94,7 @@ export default function ProfileHeader({
           </li>
         </ul>
         <div className="p-4 border-t mx-8 mt-2 flex justify-center">
-          {role === "owner" ? (
+          {slug === session.data?.user?.id ? (
             <EditDrawer />
           ) : isUserAlreadyFollowed ? (
             <button

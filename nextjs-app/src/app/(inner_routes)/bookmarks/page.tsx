@@ -56,7 +56,6 @@ export default function page() {
           src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1731335982/projects/Untitled_design_1_cuceg3.jpg"
           alt="/"
         />
-        {/* <Search /> */}
         <Tabs defaultValue="courses" className="flex flex-col justify-center items-center mt-10">
         <TabsList className="flex justify-center items-center bg-zinc-400 text-black dark:bg-zinc-800 dark:text-white w-96">
           <TabsTrigger className="w-48" value="courses">Courses</TabsTrigger>

@@ -13,13 +13,13 @@ export default function EditDrawer() {
         </button>
       </DrawerTrigger>
       <DrawerContent className="h-[80vh] dark:bg-zinc-900">
-        <div className="overflow-y-scroll hide-scrollbar grid grid-cols-1 gap-8 p-8 sm:grid-cols-2">
+        <div className="overflow-y-scroll hide-scrollbar mx-auto">
           <div>
             <EditProfile />
           </div>
-          <div>
+          {/* <div>
             <DeleteCourseList />
-          </div>
+          </div> */}
         </div>
       </DrawerContent>
     </Drawer>

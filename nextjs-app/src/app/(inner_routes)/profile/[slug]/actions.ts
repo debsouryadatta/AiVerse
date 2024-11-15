@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import { getPhotoUrl } from "@/lib/cloudinary";
 import { prisma } from "@/lib/db";
 
@@ -29,6 +30,26 @@ export async function getUserProfileAction(userId: string) {
     });
     console.log("User", user);
     return user;
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
+}
+
+export async function getUserPostsAction(userId: string) {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        user: true,
+        comments: true,
+        likes: true,
+        bookmarks: true,
+      },
+    });
+    return posts;
   } catch (error) {
     console.log("Error", error);
     throw error;
@@ -148,6 +169,22 @@ export async function deleteCoursesAction(
   }
 }
 
+export async function deleteCourseAction(courseId: string) {
+  const session = await auth();
+  try {
+    const course = await prisma.course.delete({
+      where: {
+        id: courseId,
+        userId: session?.user?.id,
+      },
+    });
+    return true;
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
+}
+
 export async function getPhotoUrlAction(formData: FormData) {
   try {
     // Convert the file to a buffer
@@ -182,4 +219,19 @@ export async function updateProfileAction(
         console.log("Error", error);
         throw error;
     }
+}
+
+export async function deletePostAction(postId: string, userId: string) {
+  try {
+    const post = await prisma.post.delete({
+      where: {
+        id: postId,
+        userId: userId,
+      },
+    });
+    return true;
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
 }

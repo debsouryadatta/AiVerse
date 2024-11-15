@@ -6,7 +6,6 @@ import { HoverEffect } from '../ui/card-hover-effect';
 import { IconBookmark } from '@tabler/icons-react';
 
 export default function BmCourses({bookmarkCourses, setBookmarkCourses}: {bookmarkCourses: BookmarkCourse[], setBookmarkCourses: React.Dispatch<React.SetStateAction<BookmarkCourse[]>>}) {
-//   const [courses, setCourses] = useState<BookmarkCourse[]>(bookmarkCourses);
 
   if (bookmarkCourses.length === 0) {
     return (
@@ -21,7 +20,7 @@ export default function BmCourses({bookmarkCourses, setBookmarkCourses}: {bookma
 
   return (
     <div className="min-h-[75vh]">
-      {bookmarkCourses.length > 0 ? (
+      {bookmarkCourses.length > 0 && (
         <div className="mx-auto max-w-[70vw]">
           <HoverEffect 
             items={bookmarkCourses.map(course => ({
@@ -35,10 +34,6 @@ export default function BmCourses({bookmarkCourses, setBookmarkCourses}: {bookma
             page="bookmark-page"
             setCourses={setBookmarkCourses}
           />
-        </div>
-      ) : (
-        <div className="flex justify-center items-center h-96">
-          <h1 className="text-3xl">No bookmarked courses found</h1>
         </div>
       )}
     </div>

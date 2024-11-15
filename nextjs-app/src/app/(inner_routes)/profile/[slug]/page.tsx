@@ -2,13 +2,17 @@
 
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { getFollowersAction, getFollowingAction, getUserCoursesAction, getUserProfileAction, isUserAlreadyFollowedAction } from "./actions";
+import { getFollowersAction, getFollowingAction, getUserCoursesAction, getUserPostsAction, getUserProfileAction, isUserAlreadyFollowedAction } from "./actions";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { User } from "@/types";
+import { CourseWithUser, ExplorePost, User } from "@/types";
 import { useFollowersStore, useFollowingStore, useProfileCoursesStore, useProfileUserStore } from "@/store";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useProfilePostsStore } from "@/store/post";
+import CoursesCreated from "@/components/profile/CoursesCreated";
+import PostsCreated from "@/components/profile/PostsCreated";
 
 type Props = {
   params: {
@@ -18,6 +22,7 @@ type Props = {
 
 export default async function page({params: {slug}}: Props) {
   const { courses, setCourses } = useProfileCoursesStore();
+  const { posts, setPosts } = useProfilePostsStore();
   const { user, setUser } = useProfileUserStore();
   const [role, setRole] = useState("");
   const [isUserAlreadyFollowed, setIsUserAlreadyFollowed] = useState(false);
@@ -26,18 +31,21 @@ export default async function page({params: {slug}}: Props) {
   const { setFollowers } = useFollowersStore();
   const { setFollowing } = useFollowingStore();
   
-  if (!session?.data?.user) {
-    toast("You need to be logged in to see Profile.");
-    return router.push('/gallery');
-  }
+  // if (!session?.data?.user) {
+  //   toast("You need to be logged in to see Profile.");
+  //   return router.push('/gallery');
+  // }
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const courses: any = await getUserCoursesAction(slug);
-      const profile: any = await getUserProfileAction(slug);
+      const courses: CourseWithUser[] = await getUserCoursesAction(slug);
+      const profile: User | null = await getUserProfileAction(slug);
+      const posts: ExplorePost[] = await getUserPostsAction(slug);
       console.log("Profile", profile);
+      console.log("Posts", posts);
       setCourses(courses);
       setUser(profile);
+      setPosts(posts);
     }
     fetchCourses();
 
@@ -85,18 +93,19 @@ export default async function page({params: {slug}}: Props) {
     
   return (
     <div className="min-h-[75vh]">
-        <ProfileHeader user={user} role={role} isUserAlreadyFollowed={isUserAlreadyFollowed} setIsUserAlreadyFollowed={setIsUserAlreadyFollowed} />
-        <h2 className="text-center mt-10 mb-[-30px] text-2xl font-bold">Courses Created</h2>
-        {courses ?
-        <div className="mx-auto max-w-[70vw]">
-          <HoverEffect items={courses} />
-        </div>
-        :
-        <div className="flex justify-center items-center h-96">
-            <h1 className="text-3xl">No courses found</h1>
-        </div>
-        }
-        {/* <HoverEffect /> */}
+        <ProfileHeader user={user} slug={slug} isUserAlreadyFollowed={isUserAlreadyFollowed} setIsUserAlreadyFollowed={setIsUserAlreadyFollowed} />
+        <Tabs defaultValue="courses" className="flex flex-col justify-center items-center mt-10">
+        <TabsList className="flex justify-center items-center bg-zinc-400 text-black dark:bg-zinc-800 dark:text-white w-96">
+          <TabsTrigger className="w-48" value="courses">Courses</TabsTrigger>
+          <TabsTrigger className="w-48" value="posts">Posts</TabsTrigger>
+        </TabsList>
+        <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="courses">
+          <CoursesCreated />
+        </TabsContent>
+        <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="posts">
+          <PostsCreated />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

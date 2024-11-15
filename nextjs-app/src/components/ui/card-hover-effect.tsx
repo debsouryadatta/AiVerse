@@ -11,13 +11,15 @@ import { Trash2 } from "lucide-react";
 import { Button } from "./button";
 import { deleteBookmarkAction } from "@/app/(inner_routes)/bookmarks/actions";
 import { toast } from "sonner";
-import { BookmarkCourse } from "@/types";
+import { BookmarkCourse, CourseWithUser } from "@/types";
+import { deleteCourseAction } from "@/app/(inner_routes)/profile/[slug]/actions";
 
 export const HoverEffect = ({
   items,
   className,
   page,
   setCourses,
+  setProfileCourses,
 }: {
   items: {
     id: string;
@@ -32,6 +34,7 @@ export const HoverEffect = ({
   // For bookmark page
   page?: string;
   setCourses?: Dispatch<React.SetStateAction<BookmarkCourse[]>>;
+  setProfileCourses?: (courses: CourseWithUser[]) => void;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const session = useSession();
@@ -46,6 +49,20 @@ export const HoverEffect = ({
     } catch (error) {
       console.log("Error", error);
       toast.error("Failed to delete bookmark");
+    }
+  }
+
+  const deleteCourse = async (courseId: string) => {
+    try {
+      await deleteCourseAction(courseId);
+      if (setProfileCourses) {
+        const filteredCourses = items?.filter((item) => item.id !== courseId) as CourseWithUser[];
+        setProfileCourses(filteredCourses);
+        toast.success("Course deleted successfully");
+      }
+    } catch (error) {
+      console.log("Error", error);      
+      toast.error("Failed to delete course");
     }
   }
   
@@ -107,6 +124,11 @@ export const HoverEffect = ({
         {page === "bookmark-page" && 
         <div className="mb-1 mt-[-5px] w-[95%] mx-auto">
             <Button onClick={async() => deleteBookmark(item.bookmarkId!)} className="w-full h-8 bg-zinc-800 dark:bg-white"><Trash2 size={16} /><span className="mt-[0.5px]">Delete</span></Button>
+        </div>
+      }
+        {(page === "profile-page" && session?.data?.user?.id === item?.user?.id) &&
+        <div className="mb-1 mt-[-5px] w-[95%] mx-auto">
+            <Button onClick={async() => deleteCourse(item.id)} className="w-full h-8 bg-zinc-800 dark:bg-white"><Trash2 size={16} /><span className="mt-[0.5px]">Delete</span></Button>
         </div>
       }
         </div>
