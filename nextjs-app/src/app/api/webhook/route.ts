@@ -1,60 +1,66 @@
-import { prisma } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
+import { prisma } from "@/lib/db";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+
 export async function POST(req: Request) {
-  const body = await req.text();
-  const signature = headers().get("Stripe-Signature") as string;
-  let event: Stripe.Event;
-
+  console.log("Webhook called");
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET as string
-    );
-  } catch (error: any) {
-    return new NextResponse("webhook error", { status: 400 });
-  }
+    const body = await req.text();
+    const signature = headers().get("Stripe-Signature") as string;
 
-  const session = event.data.object as Stripe.Checkout.Session;
+    let event: Stripe.Event;
 
-  // new subcription created
-  if (event.type === "checkout.session.completed") {
-    const subscription = await stripe.subscriptions.retrieve(
-      session.subscription as string
-    );
-    if (!session?.metadata?.userId) {
-      return new NextResponse("webhook error, no userid", { status: 400 });
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET!
+      );
+    } catch (error: any) {
+      return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
     }
-    await prisma.userSubscription.create({
-      data: {
-        userId: session.metadata.userId,
-        stripeSubscriptionId: subscription.id,
-        stripeCustomerId: subscription.customer as string,
-        stripePriceId: subscription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: new Date(
-          subscription.current_period_end * 1000
-        ),
-      },
-    });
-  }
 
-  // old subscription updated
-  if (event.type === "invoice.payment_succeeded") {
-    const subcription = await stripe.subscriptions.retrieve(
-      session.subscription as string
-    );
-    await prisma.userSubscription.update({
-      where: {
-        stripeSubscriptionId: subcription.id,
-      },
-      data: {
-        stripePriceId: subcription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: new Date(subcription.current_period_end * 1000),
-      },
-    });
+    const session = event.data.object as Stripe.Checkout.Session;
+
+    if (event.type === "checkout.session.completed") {
+      if (!session?.metadata?.userId || !session?.metadata?.credits) {
+        return new NextResponse("Missing metadata", { status: 400 });
+      }
+
+      // Create purchase record and update user's credits
+      await prisma.$transaction(async (tx) => {
+        // Create purchase record
+        await tx.userPurchase.create({
+          data: {
+            userId: session?.metadata?.userId!,
+            creditsAmount: parseInt(session?.metadata?.credits!),
+            amount: session.amount_total ? session.amount_total / 100 : 0,
+            currency: session.currency?.toUpperCase() ?? "USD",
+            status: session.status ?? "succeeded",
+            stripePaymentIntentId: session.payment_intent as string,
+            stripePaymentIntentStatus: "succeeded"
+          },
+        });
+
+        // Update user's credits
+        await tx.user.update({
+          where: {
+            id: session?.metadata?.userId!,
+          },
+          data: {
+            credits: {
+              increment: parseInt(session?.metadata?.credits!),
+            },
+          },
+        });
+      });
+    }
+
+    return new NextResponse(null, { status: 200 });
+  } catch (error) {
+    console.log("Error: ", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
-  return new NextResponse(null, { status: 200 });
 }

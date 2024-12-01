@@ -14,7 +14,7 @@ model User {
   emailVerified DateTime?
   image         String?
   bio           String?         @default("Update bio")
-  credits       Int             @default(10)
+  credits       Int             @default(2000)  // Default to hobby tier credits
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
@@ -30,6 +30,7 @@ model User {
   following Follow[]   @relation("UserFollowing")
   roadmaps   Roadmap[]
   posts      Post[]
+  purchases  UserPurchase[]
 }
 
 model Account {
@@ -199,15 +200,6 @@ model Follow {
   @@unique([followerId, followingId])
 }
 
-model UserSubscription {
-  id                     String    @id @default(cuid())
-  userId                 String    @unique
-  stripeCustomerId       String    @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-}
-
 model Roadmap {
   id          String @id @default(cuid())
   userId      String
@@ -216,4 +208,19 @@ model Roadmap {
   user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId], name: "userId5")
+}
+
+model UserPurchase {
+  id            String   @id @default(cuid())
+  userId        String
+  creditsAmount Int      // Number of credits purchased
+  amount        Float    // Amount paid in currency
+  currency      String   @default("USD")
+  status        String   // e.g., "succeeded", "failed", "refunded"
+  stripePaymentIntentId String  // Stripe Payment Intent ID
+  stripePaymentIntentStatus String // Stripe Payment Intent Status
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }

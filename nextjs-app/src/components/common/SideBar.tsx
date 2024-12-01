@@ -20,14 +20,15 @@ import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { ThemeToggle } from "./ThemeToggle";
+import CreditsDisplay from "./CreditsDisplay";
 
 export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
   const session = useSession();
 
   const signedInLinks = [
     {
-      label: "Gallery",
-      href: "/gallery",
+      label: "Explore",
+      href: "/explore",
       icon: (
         <IconLayoutGrid className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -47,8 +48,8 @@ export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
       ),
     },
     {
-      label: "Roadmap",
-      href: "/roadmap",
+      label: "Ai Tools",
+      href: "/aitools",
       icon: (
         <IconSitemap className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -85,8 +86,8 @@ export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
 
   const signedOutLinks = [
     {
-      label: "Gallery",
-      href: "/gallery",
+      label: "Explore",
+      href: "/explore",
       icon: (
         <IconLayoutGrid className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -106,8 +107,8 @@ export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
       ),
     },
     {
-      label: "Roadmap",
-      href: "/roadmap",
+      label: "Ai Tools",
+      href: "/aitools",
       icon: (
         <IconSitemap className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -138,6 +139,11 @@ export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
         "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
+      {session?.data?.user && (
+        <div className="absolute top-4 right-6 z-50">
+          <CreditsDisplay />
+        </div>
+      )}
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -193,7 +199,7 @@ export const Logo = () => {
   const { theme } = useTheme();
   return (
     <Link
-      href="/gallery"
+      href="/explore"
       className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
     >
       <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
@@ -218,4 +224,3 @@ export const LogoIcon = () => {
     </Link>
   );
 };
-

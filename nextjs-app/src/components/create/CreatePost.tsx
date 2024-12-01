@@ -73,7 +73,7 @@ export default function CreatePost() {
       </p>
 
       <div className="flex p-4 mt-5 border-none bg-zinc-200 dark:bg-zinc-800 rounded-md">
-        <InfoIcon className="w-12 h-12 mr-3 text-blue-400" />
+        <InfoIcon className="w-8 h-12 mr-3 text-blue-400" />
         <div>
           Share your thoughts, ideas, or questions with the community. Add media to make your post more engaging!
         </div>

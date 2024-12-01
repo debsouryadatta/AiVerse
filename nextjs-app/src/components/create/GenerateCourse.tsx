@@ -3,13 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/utils/cn";
-import { InfoIcon, Loader2, Plus, Trash } from "lucide-react";
+import { InfoIcon, Loader2, Plus, Trash, Coins } from "lucide-react";
 import { toast } from "sonner";
-import { checkSubscriptionAction, generateCourse, getPhotoUrlAction, getUserCreditsAction } from "@/app/(inner_routes)/create/actions";
+import { generateCourse, getPhotoUrlAction, getUserCreditsAction } from "@/app/(inner_routes)/create/actions";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "../ui/file-upload";
 import { Switch } from "@/components/ui/switch";
-import SubscriptionAction from "./SubscriptionAction";
 import { useSession } from "next-auth/react";
 
 export function GenerateCourse() {
@@ -22,6 +21,7 @@ export function GenerateCourse() {
   const [generating, setGenerating] = useState(false);
   const [credits, setCredits] = useState(0);
   const [isPro, setIsPro] = useState(false);
+  const [creditsRequired, setCreditsRequired] = useState(50);
 
   const router = useRouter();
   const session = useSession();
@@ -36,17 +36,7 @@ export function GenerateCourse() {
         toast.error("Error getting user credits");
       }
     };
-    const checkPro = async () => {
-      try {
-        const isPro = await checkSubscriptionAction(session?.data?.user?.id!);
-        console.log("Is Pro", isPro);
-        setIsPro(isPro);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    }
     getUserCredits();
-    checkPro();
   }, [session]);
   
 
@@ -54,15 +44,19 @@ export function GenerateCourse() {
     e.preventDefault();
     toast("Generating course...");
     setGenerating(true);
-    if (!courseTitle) return toast("Course title is required.");
+    if (!courseTitle){
+      setGenerating(false);
+      return toast("Course title is required."); 
+    }
     for (const chapter of chapters) {
       if (!chapter.title) {
+        setGenerating(false);
         return toast("Chapter title is required.");
       }
     }
-    if(isPro === false && credits === 0) {
+    if(credits < creditsRequired) {
       setGenerating(false);
-      return toast.error("You have reached your free generation limit. Please upgrade to generate more courses");
+      return toast.error("Not enough credits");
     }
     try {
       const course = await generateCourse(chapters, courseTitle, session?.data?.user?.id!, bannerUrl, visibility, isPro);
@@ -84,16 +78,21 @@ export function GenerateCourse() {
     console.log("Adding more chapters");
     const newChapter = { id: chapters.length + 1, title: "" };
     setChapters([...chapters, newChapter]);
+    setCreditsRequired(creditsRequired + 25);
     toast("Chapter box has been added.");
     console.log([...chapters, newChapter]);
   };
 
   const removeChapters = () => {
+    if(chapters.length === 1) {
+      return toast("At least one chapter is required.");
+    }
     console.log("Removing chapters");
     if (chapters.length === 1) {
       return toast("At least one chapter is required.");
     }
     setChapters(chapters.slice(0, -1));
+    setCreditsRequired(creditsRequired - 25);
     toast("Chapter box has been removed.");
   };
 
@@ -253,15 +252,22 @@ export function GenerateCourse() {
             type="submit"
             disabled={false}
           >
-            Generate &rarr;
+            <div className="flex items-center justify-center space-x-2">
+              <span>Generate</span>
+              <div className="flex items-center gap-1 text-xs opacity-70 bg-black/20 px-2 py-0.5 rounded-full">
+                <Coins size={12} className="text-amber-400" />
+                <span>{creditsRequired} credits</span>
+              </div>
+              <span className="ml-1">&rarr;</span>
+            </div>
             <BottomGradient />
           </button>
-        )}
+        )} 
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
       </form>
 
-      {!isPro && <SubscriptionAction credits={credits} /> }
+      {/* {!isPro && <SubscriptionAction credits={credits} /> } */}
     </div>
   );
 }

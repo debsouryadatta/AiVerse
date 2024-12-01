@@ -82,22 +82,10 @@
 - #14 - [[MOD]: Update the search page including the search posts result tab](https://github.com/debsouryadatta/CourseX/issues/14) ✅
 - #15 - [[MOD]: Update the bookmarks page to have only two tabs for showing the saved posts & saved courses](https://github.com/debsouryadatta/CourseX/issues/15) ✅
 - #16 - [[MOD]: Update the profile page to have two tabs for showing the user posts & user generated courses, put delete options beside them. Also remove the delete options in the edit profile drawer](https://github.com/debsouryadatta/CourseX/issues/16) ✅
+- #17 - [[MOD]: New payment system, one time stripe payment for absolute credits, different ai support -> different credits](https://github.com/debsouryadatta/CourseX/issues/17) ✅
 
 
 
-
-
-
-
-### v0.3 Planning
-- Pages:
-- Explore page - User Posts, Generated Courses, Quizes
-- Search page - Find users, posts, courses, quizes
-- Create page - User Posts, Generated Courses, Quizes
-- Ai Tools page - Roadmap generator, Voice mentor, Chat with site, Chat with pdf, Ai agents
-- Bookmarks page - User Posts, Generated Courses, Quizes
-- Profile page -
-- Settings page - Different ai support -> different credits(One time Stripe payment for absolute credits)
 
 
   

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 import SearchTabs from "./SearchTabs";
 import { debounce, set } from "lodash";
@@ -45,6 +45,25 @@ export function Search() {
     e.preventDefault();
     console.log("submitted");
   };
+
+  useEffect(() => {
+    const initialFetch = async () => {
+      try {
+        const courses: CourseWithUser[] = await searchCoursesAction("");
+        const posts: ExplorePost[] = await searchPostsAction("");
+        const profiles: User[]  = await searchProfilesAction("");
+        console.log("Courses", courses);
+        console.log("Profiles", profiles);
+        setCourses(courses);
+        setPosts(posts);
+        setProfiles(profiles);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+    initialFetch();
+  },[])
+
   return (
     <div className="flex flex-col mt-20 px-4">
       <h2 className="text-lg md:text-xl font-bold text-neutral-800 dark:text-neutral-200 font-sans pl-3 mb-4">
