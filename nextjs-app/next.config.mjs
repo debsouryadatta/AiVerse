@@ -40,6 +40,11 @@ const nextConfig = {
             protocol: "https",
             port: "",
           },
+          {
+            hostname: "cdn.dribbble.com",
+            protocol: "https",
+            port: "",
+          },
         ],
       },
 

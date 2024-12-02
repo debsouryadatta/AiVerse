@@ -83,6 +83,9 @@
 - #15 - [[MOD]: Update the bookmarks page to have only two tabs for showing the saved posts & saved courses](https://github.com/debsouryadatta/CourseX/issues/15) ✅
 - #16 - [[MOD]: Update the profile page to have two tabs for showing the user posts & user generated courses, put delete options beside them. Also remove the delete options in the edit profile drawer](https://github.com/debsouryadatta/CourseX/issues/16) ✅
 - #17 - [[MOD]: New payment system, one time stripe payment for absolute credits, different ai support -> different credits](https://github.com/debsouryadatta/CourseX/issues/17) ✅
+- #18 - [[MOD]: Shift the roadmap page into aitools page, modify the ui of the aitools page. Roadmap page should have the generation feature as well as saving them to the db](https://github.com/debsouryadatta/CourseX/issues/18) ✅
+
+
 
 
 

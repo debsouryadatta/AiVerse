@@ -140,7 +140,7 @@ export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
       )}
     >
       {session?.data?.user && (
-        <div className="absolute top-4 right-6 z-50">
+        <div className="absolute top-14 right-6 z-50 sm:top-4">
           <CreditsDisplay />
         </div>
       )}

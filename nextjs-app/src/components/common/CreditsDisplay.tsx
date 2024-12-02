@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { getUserCreditsAction } from "@/app/(inner_routes)/create/actions";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useGlobalCreditsStore } from "@/store";
 
 export default function CreditsDisplay() {
-  const [credits, setCredits] = useState<number | null>(null);
+  const { credits, setCredits  } = useGlobalCreditsStore();
   const session = useSession();
 
   useEffect(() => {

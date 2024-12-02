@@ -6,65 +6,46 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, Coins, Sparkles } from "lucide-react";
 import { useSession } from "next-auth/react";
-import {
-  checkSubscriptionAction,
-  getUserCreditsAction,
-} from "@/app/(inner_routes)/create/actions";
 import { toast } from "sonner";
-import SubscriptionAction from "../create/SubscriptionAction";
-import { generateRoadmapAction } from "@/app/(inner_routes)/roadmap/actions";
+import { generateRoadmapAction } from "@/app/(inner_routes)/aitools/roadmap/actions";
 import { Roadmap } from "@/types/roadmap";
+import { useGlobalCreditsStore } from "@/store";
 
 export default function HeaderInput({roadmap, setRoadmap}: {roadmap: Roadmap | null, setRoadmap: (roadmap: Roadmap) => void}) {
   const [topic, setTopic] = useState("");
-  const [credits, setCredits] = useState(0);
-  const [isPro, setIsPro] = useState(false);
+  const { credits, setCredits } = useGlobalCreditsStore();
   const [loading, setLoading] = useState(false);
 
   const session = useSession();
+  const CREDITS_REQUIRED = 25;
 
-  useEffect(() => {
-    const getUserCredits = async () => {
-      try {
-        const credits = await getUserCreditsAction(session?.data?.user?.id!);
-        setCredits(credits!);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
-    const checkPro = async () => {
-      try {
-        const isPro = await checkSubscriptionAction(session?.data?.user?.id!);
-        console.log("Is Pro", isPro);
-        setIsPro(isPro);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    };
-    getUserCredits();
-    checkPro();
-  }, [session]);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     if (!topic) {
       toast.error("Please enter a title");
+      setLoading(false);
+      return;
+    }
+    if (credits! < CREDITS_REQUIRED) {
+      toast.error("Not enough credits");
+      setLoading(false);
       return;
     }
     try {
-      const response = await generateRoadmapAction(topic, isPro, session?.data?.user?.id!);
+      const response = await generateRoadmapAction(topic, session?.data?.user?.id!);
       setRoadmap(response);
-      setCredits(credits - 1);
+      setCredits(credits! - CREDITS_REQUIRED);
       toast.success("Roadmap generated successfully");
     } catch (error) {
       console.log("Error: ", error);
+      toast.error("Failed to generate roadmap");
     } finally {
       setLoading(false);
     }
@@ -82,16 +63,20 @@ export default function HeaderInput({roadmap, setRoadmap}: {roadmap: Roadmap | n
           </p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleGenerate} className="flex space-x-2">
+          <form onSubmit={handleGenerate} className="flex space-x-2 flex-col sm:flex-row">
             <Input
               placeholder="Enter a topic to generate a roadmap for"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               className="flex-grow bg-white dark:bg-transparent dark:border-zinc-600 py-6 mt-[-6px]"
             />
-            <Button type="submit" disabled={loading} >
+            <Button className="mt-4 sm:mt-0" type="submit" disabled={loading} >
               <Sparkles className="mr-2 h-4 w-4" />
               {loading ? "Generating..." : "Generate"}
+              <div className="flex items-center gap-1 text-xs opacity-70 bg-black/20 px-2 py-0.5 ml-2 rounded-full">
+                <Coins size={12} className="text-amber-600" />
+                <span>{CREDITS_REQUIRED} credits</span>
+              </div>
             </Button>
           </form>
           <div className="flex flex-wrap justify-center space-x-4 mt-4">
@@ -109,9 +94,6 @@ export default function HeaderInput({roadmap, setRoadmap}: {roadmap: Roadmap | n
             ))}
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col items-center">
-          {!isPro && <SubscriptionAction credits={credits} />}
-        </CardFooter>
       </Card>
     </div>
   );

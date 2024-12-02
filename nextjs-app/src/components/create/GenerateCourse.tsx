@@ -5,11 +5,12 @@ import { Input } from "../ui/input";
 import { cn } from "@/utils/cn";
 import { InfoIcon, Loader2, Plus, Trash, Coins } from "lucide-react";
 import { toast } from "sonner";
-import { generateCourse, getPhotoUrlAction, getUserCreditsAction } from "@/app/(inner_routes)/create/actions";
+import { generateCourse, getPhotoUrlAction } from "@/app/(inner_routes)/create/actions";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "../ui/file-upload";
 import { Switch } from "@/components/ui/switch";
 import { useSession } from "next-auth/react";
+import { useGlobalCreditsStore } from "@/store";
 
 export function GenerateCourse() {
   const [courseTitle, setCourseTitle] = useState("");
@@ -19,25 +20,12 @@ export function GenerateCourse() {
   const [visibility, setVisibility] = useState("public");
   const [bannerUrl, setBannerUrl] = useState("");
   const [generating, setGenerating] = useState(false);
-  const [credits, setCredits] = useState(0);
-  const [isPro, setIsPro] = useState(false);
   const [creditsRequired, setCreditsRequired] = useState(50);
+  const { credits, setCredits } = useGlobalCreditsStore();
 
   const router = useRouter();
   const session = useSession();
 
-  useEffect(() => {
-    const getUserCredits = async () => {
-      try {
-        const credits = await getUserCreditsAction(session?.data?.user?.id!);
-        setCredits(credits!);
-      } catch (error) {
-        console.log("Error", error);
-        toast.error("Error getting user credits");
-      }
-    };
-    getUserCredits();
-  }, [session]);
   
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,19 +42,20 @@ export function GenerateCourse() {
         return toast("Chapter title is required.");
       }
     }
-    if(credits < creditsRequired) {
+    if(credits! < creditsRequired) {
       setGenerating(false);
       return toast.error("Not enough credits");
     }
     try {
-      const course = await generateCourse(chapters, courseTitle, session?.data?.user?.id!, bannerUrl, visibility, isPro);
+      const course = await generateCourse(chapters, courseTitle, session?.data?.user?.id!, bannerUrl, visibility);
       console.log("Generated Course", course);
       if(course.chapters.length === 0) {
         throw Error;
       }
       setGenerating(false);
+      setCredits(credits! - creditsRequired);
       toast.success("Course has been generated successfully.");
-      router.push(`/gallery`);
+      router.push(`/course/${course.course.id}`);
     } catch (error) {
       console.log("Error", error);
       setGenerating(false);
