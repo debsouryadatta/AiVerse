@@ -24,7 +24,7 @@ export default function DashboardLayout({
       <SideBar>
         {/* <NavbarComp /> */}
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </SideBar>
     </div>
   );

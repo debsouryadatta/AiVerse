@@ -31,10 +31,10 @@ export default async function page({params: {slug}}: Props) {
   const { setFollowers } = useFollowersStore();
   const { setFollowing } = useFollowingStore();
   
-  // if (!session?.data?.user) {
-  //   toast("You need to be logged in to see Profile.");
-  //   return router.push('/gallery');
-  // }
+  if (!session?.data?.user) {
+    toast("You need to be logged in to see Profile.");
+    return router.push('/explore');
+  }
 
   useEffect(() => {
     const fetchCourses = async () => {

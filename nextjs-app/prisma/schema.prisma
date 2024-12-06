@@ -19,6 +19,7 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  VoiceMentor   VoiceMentor[]
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -221,6 +222,21 @@ model UserPurchase {
   stripePaymentIntentStatus String // Stripe Payment Intent Status
   createdAt     DateTime @default(now())
   user          User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model VoiceMentor {
+  id           String   @id @default(cuid())
+  name         String
+  description  String   @db.Text
+  voiceId      String
+  chatHistory  Json[]   @default([]) // Array of chat messages
+  lastUsed     DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String   // Foreign key to User
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

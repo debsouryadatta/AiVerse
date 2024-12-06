@@ -4,3 +4,4 @@ export * from './chapter';
 export * from './roadmap';
 export * from './post';
 export * from './bookmark';
+export * from './voiceMentor';

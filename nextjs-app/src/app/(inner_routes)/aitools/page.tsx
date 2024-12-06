@@ -84,7 +84,7 @@ export default function Component() {
               title: "Voice Mentor", 
               icon: Mic, 
               description: "Get real-time feedback on your speaking and pronunciation",
-              href: "/aitools/voice",
+              href: "/aitools/voicementor",
               available: true
             },
             { 

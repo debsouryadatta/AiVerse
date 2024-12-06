@@ -50,7 +50,9 @@ export default function RoadmapPage() {
 
   useEffect(() => {
     if (roadmap && roadmapRef.current) {
-      roadmapRef.current.scrollIntoView({ behavior: 'smooth' })
+      setTimeout(() => {
+        roadmapRef?.current?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
     }
   }, [roadmap])
 
