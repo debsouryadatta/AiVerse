@@ -7,12 +7,6 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/common/Footer";
 import { SideBar } from "@/components/common/SideBar";
 
-// const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "CourseX",
-  description: "CourseX - Unveil The Power of AI in Education.",
-};
 
 export default function DashboardLayout({
   children,

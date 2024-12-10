@@ -39,9 +39,9 @@ async function getCourses(){
 
 export default async function page() {
   const posts = await getAllPosts() || [];
-  console.log("Posts: ", posts);
+  // console.log("Posts: ", posts);
   const courses = await getCourses();
-  console.log("Courses: ", courses);
+  // console.log("Courses: ", courses);
 
   return (
     <div>
