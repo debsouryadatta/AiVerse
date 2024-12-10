@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - "coursex"
+      - "aiverse"
 
   nextjs-app:
     depends_on:
@@ -18,9 +18,9 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - "coursex"
+      - "aiverse"
 
 
 networks:
-  coursex:
+  aiverse:
     driver: bridge
