@@ -15,7 +15,9 @@ export default function SubscriptionAction({credits}: {credits: number}) {
     setLoading(true);
     try {
       const response = await axios.get("/api/stripe");
-      window.location.href = response.data.url;
+      if (typeof window !== 'undefined') {
+        window.location.href = response.data.url;
+      }
     } catch (error) {
       console.log("error", error);
     } finally {

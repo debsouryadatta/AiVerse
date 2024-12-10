@@ -13,7 +13,7 @@ export default function page() {
           src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1723098788/projects/code-1839406_ial7zq.jpg"
           alt="/"
           width={200}
-          height={200}
+          
         />
         <Search />
       </div>

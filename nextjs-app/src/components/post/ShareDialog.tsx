@@ -19,13 +19,21 @@ import { Share } from "lucide-react"
 
 export function ShareDialog({post}: {post: any}) {
     const [pageUrl, setPageUrl] = useState("");
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setPageUrl(
-            window.location.protocol + "//" + window.location.host + "/post/" + post.id
-        )
-    }, [])
+      setMounted(true);
+      if (typeof window !== 'undefined') {
+          setPageUrl(
+              window.location.protocol + "//" + window.location.host + "/post/" + post.id
+          )
+      }
+    }, [post.id])
     
+    if (!mounted) {
+      return null;
+    }
+
     const copyToClipboard = () => {
         navigator.clipboard.writeText(pageUrl)
         toast("Link copied to clipboard");

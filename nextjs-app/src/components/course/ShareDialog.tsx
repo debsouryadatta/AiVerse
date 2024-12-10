@@ -20,15 +20,22 @@ import { toast } from "sonner"
 
 export function ShareDialog({course}: {course: any}) {
     const [pageUrl, setPageUrl] = useState("");
-
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+      setMounted(true);
+      if (typeof window !== 'undefined') {
         let inviteCode = course?.visibility == "invite-only" ? `?inviteCode=${course.inviteCode}` : "";
         setPageUrl(
-            window.location.protocol + "//" + window.location.host + window.location.pathname + inviteCode
+          window.location.protocol + "//" + window.location.host + window.location.pathname + inviteCode
         )
-    }, [])
+      }
+    }, [course])
     
+    if (!mounted) {
+      return null;
+    }
+
     const copyToClipboard = () => {
         navigator.clipboard.writeText(pageUrl)
         toast("Link copied to clipboard");

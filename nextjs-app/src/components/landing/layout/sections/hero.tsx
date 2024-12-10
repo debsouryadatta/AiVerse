@@ -13,6 +13,12 @@ export const HeroSection = () => {
   const { theme } = useTheme();
   const router = useRouter();
 
+  const safeRedirect = (url: string) => {
+    if (typeof window !== 'undefined') {
+      window.location.href = url;
+    }
+  }
+
   return (
     <section id="hero" className="container w-full">
       <div className="grid place-items-center lg:max-w-screen-xl gap-8 mx-auto py-20 md:py-32">
@@ -39,7 +45,7 @@ export const HeroSection = () => {
           </p>
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
-            <Button onClick={() => window.location.href = "/explore"} className="w-5/6 md:w-1/4 font-bold group/arrow">
+            <Button onClick={() => safeRedirect("/explore")} className="w-5/6 md:w-1/4 font-bold group/arrow">
               Get Started
               <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
             </Button>

@@ -54,7 +54,10 @@ export const ContactSection = () => {
 
     const mailToLink = `mailto:leomirandadev@gmail.com?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`;
 
-    window.location.href = mailToLink;
+    // Only execute on client
+    if (typeof window !== 'undefined') {
+      window.location.href = mailToLink;
+    }
   }
 
   return (

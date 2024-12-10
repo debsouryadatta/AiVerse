@@ -21,7 +21,9 @@ const SubscriptionButton = ({ tier, isCurrentTier, credits, price }: Props) => {
       const response = await axios.post("/api/stripe", {
         tier
       });
-      window.location.href = response.data.url;
+      if (typeof window !== 'undefined') {
+        window.location.href = response.data.url;
+      }
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
     } finally {
