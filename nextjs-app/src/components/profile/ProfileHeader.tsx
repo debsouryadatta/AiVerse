@@ -12,6 +12,7 @@ import EditDialog from "./EditDialog";
 import EditDrawer from "./EditDrawer";
 import { User } from "@/types";
 import { useProfileCoursesStore } from "@/store";
+import Image from "next/image";
 
 export default function ProfileHeader({
   user,
@@ -63,16 +64,21 @@ export default function ProfileHeader({
     <div>
       <div className="sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto bg-white dark:bg-zinc-900 shadow-xl rounded-lg text-gray-900">
         <div className="rounded-t-lg h-72 overflow-hidden">
-          <img
+          <Image
             className="object-cover object-top w-full"
             src="https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Mountain"
+            width={2070}
+            height={600}
           />
         </div>
         <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
-          <img
+          <Image
             className="object-cover object-center h-32"
             src={user?.image || ""}
+            alt="Profile"
+            width={128}
+            height={128}
           />
         </div>
         <div className="text-center mt-2">

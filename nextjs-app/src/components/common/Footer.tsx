@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function Footer() {
@@ -16,7 +17,7 @@ export default function Footer() {
       >
         <div>
         {theme && (
-            <img
+            <Image
               src={
                 theme === 'dark'
                   ? 'https://res.cloudinary.com/diyxwdtjd/image/upload/v1723026483/projects/CX-removebg-preview_lqpcxg.png'
@@ -24,6 +25,8 @@ export default function Footer() {
               }
               className="w-[100px] h-[100px] mr-3"
               alt="CourseX logo"
+              width={100}
+              height={100}
             />
           )}
           <span>CourseX</span>
