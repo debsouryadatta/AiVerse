@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/utils/cn";
@@ -41,7 +41,7 @@ export default function CreatePost() {
       
       console.log("Post created:", post);
       toast.success("Post created successfully!");
-      router.push("/explore");
+      router.push("/post/" + post.id);
     } catch (error) {
       console.error(error);
       toast.error("Failed to create post");
@@ -62,6 +62,12 @@ export default function CreatePost() {
       toast.error("Failed to upload media");
     }
   };
+
+  useEffect(() => {
+    if (!session.data?.user) {
+      toast("You need to be logged in to create a post.");
+    }
+  }, [])
 
   return (
     <div className="max-w-3xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-zinc-950">
@@ -125,7 +131,7 @@ export default function CreatePost() {
             isPosting && "opacity-70 cursor-not-allowed"
           )}
           type="submit"
-          disabled={isPosting}
+          disabled={isPosting || !session?.data?.user}
         >
           {isPosting ? (
             <div className="flex justify-center items-center">

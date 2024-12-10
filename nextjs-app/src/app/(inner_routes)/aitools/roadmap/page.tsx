@@ -1,52 +1,18 @@
 "use client";
 
-import { Button } from '@/components/ui/button';
 import HeaderInput from '@/components/aitools/roadmap/HeaderInput';
 import RoadmapComp from '@/components/aitools/roadmap/RoadmapComp';
 import SavedRoadmaps from '@/components/aitools/roadmap/SavedRoadmaps';
 import { Roadmap } from '@/types/roadmap';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-
-const roadmapDemo: Roadmap = {
-  title: 'Web Development',
-  topics: [{
-    title: 'Programming Languages',
-    subtopics: ['Python', 'JavaScript', 'Java', 'C++', 'PHP', 'Ruby']
-  },
-  {
-    title: 'Frontend Development',
-    subtopics: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Vue.js', 'Angular.js', 'Bootstrap']
-  },
-  {
-    title: 'Backend Development',
-    subtopics: ['Node.js', 'Flask', 'Django', 'Express.js', 'Ruby on Rails', 'Spring Boot']
-  },
-  {
-    title: 'Backend Development',
-    subtopics: ['Node.js', 'Flask', 'Django', 'Express.js', 'Ruby on Rails', 'Spring Boot']
-  },
-  {
-    title: 'Backend Development',
-    subtopics: ['Node.js', 'Flask', 'Django', 'Express.js', 'Ruby on Rails', 'Spring Boot']
-  }
-  ]
-}
 
 export default function RoadmapPage() {
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null)
 
   const roadmapRef = useRef<HTMLDivElement>(null)
   const session = useSession();
-  const router = useRouter();
-
-  if (!session?.data?.user) {
-    toast("You need to be logged in to generate a roadmap.");
-    return router.push('/explore');
-  }
 
   useEffect(() => {
     if (roadmap && roadmapRef.current) {
@@ -56,6 +22,11 @@ export default function RoadmapPage() {
     }
   }, [roadmap])
 
+  useEffect(() => {
+    if (!session.data?.user) {
+      toast("You need to be logged in to create a roadmap.");
+    }
+  }, [])
 
   return (
     <div className="flex flex-col min-h-screen w-full">

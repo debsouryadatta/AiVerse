@@ -25,7 +25,7 @@ export default function CoursesCreated() {
   return (
     <div className="min-h-[75vh]">
       {courses.length > 0 && (
-        <div className="mx-auto max-w-[70vw]">
+        <div className="mx-auto">
         <h2 className="text-center mt-10 mb-[-30px] text-2xl font-bold">Courses Created</h2>
           <HoverEffect 
             items={courses} 

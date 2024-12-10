@@ -21,9 +21,27 @@ const getAllPosts = async () => {
   }
 }
 
+async function getCourses(){
+  try {
+    const res = await prisma.course.findMany({
+      where: {
+        visibility: "public"
+      },
+      include: {
+        user: true,
+      }
+    });
+    return res;
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+}
+
 export default async function page() {
   const posts = await getAllPosts() || [];
   console.log("Posts: ", posts);
+  const courses = await getCourses();
+  console.log("Courses: ", courses);
 
   return (
     <div>
@@ -42,7 +60,7 @@ export default async function page() {
             <PostsList posts={posts} />
           </TabsContent>
           <TabsContent value="courses">
-            <GalleryTab />
+            <GalleryTab courses={courses!} />
           </TabsContent>
         </Tabs>
       </div>

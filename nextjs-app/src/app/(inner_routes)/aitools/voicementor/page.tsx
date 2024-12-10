@@ -38,9 +38,13 @@ export default function VoiceMentorPage() {
   const [voiceId, setVoiceId] = useState<string>("aura-luna-en")
 
   useEffect(() => {
-    const fetchMentors = async () => {
+    const fetchMentors = async () => {      
+      if(!session?.data?.user?.id) {
+        setIsLoading(false)
+        return
+      }
       try {
-        const data = await getVoiceMentorsAction()
+        const data = await getVoiceMentorsAction(session?.data?.user?.id!)
         setMentors(data)
       } catch (error) {
         toast.error('Failed to load voice mentors')
@@ -48,12 +52,13 @@ export default function VoiceMentorPage() {
         setIsLoading(false)
       }
     }
-
+    
     fetchMentors()
-  }, [])
+  }, [session])
 
   const handleCreateMentor = async () => {
     if (!mentorName.trim() || !mentorDescription.trim()) return
+    
     if (!session?.data?.user?.id) {
       toast.error('Please sign in to create a voice mentor')
       return
@@ -151,6 +156,7 @@ export default function VoiceMentorPage() {
               <Button 
                 className="bg-gradient-to-r from-zinc-700 to-zinc-800 dark:from-zinc-600 dark:to-zinc-700 hover:from-zinc-800 hover:to-zinc-900 text-white"
                 size="lg"
+                disabled={!session?.data?.user?.id}
               >
                 <Plus className="mr-2 h-4 w-4" /> Create New Mentor
               </Button>

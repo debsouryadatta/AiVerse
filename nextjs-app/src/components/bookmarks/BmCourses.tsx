@@ -21,7 +21,7 @@ export default function BmCourses({bookmarkCourses, setBookmarkCourses}: {bookma
   return (
     <div className="min-h-[75vh]">
       {bookmarkCourses.length > 0 && (
-        <div className="mx-auto max-w-[70vw]">
+        <div className="mx-auto">
           <HoverEffect 
             items={bookmarkCourses.map(course => ({
               id: course.course!.id,

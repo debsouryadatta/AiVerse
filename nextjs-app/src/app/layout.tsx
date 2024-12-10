@@ -4,12 +4,13 @@ import "./globals.css";
 import Providers from "@/components/common/Providers";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/common/Footer";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CourseX",
-  description: "CourseX - Unveil The Power of AI in Education.",
+  title: "AiVerse",
+  description: "Unleash the Power of AI in Learning. Join the Community!",
 };
 
 export default function RootLayout({
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
           {children}

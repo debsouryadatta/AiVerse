@@ -1,28 +1,10 @@
 import { Gallery } from "@/components/gallery/Gallery";
 import { CarouselComp } from "@/components/gallery/CarouselComp";
-import { prisma } from "@/lib/db";
+import { CourseWithUser } from "@/types";
 
-async function getCourses(){
-  try {
-    const res = await prisma.course.findMany({
-      where: {
-        visibility: "public"
-      },
-      include: {
-        user: true,
-      }
-    });
-    return res;
-  } catch (error) {
-    console.log("Error: ", error);
-  }
 
-}
 
-export default async function GalleryTab() {
-  const courses = await getCourses();
-  console.log("Courses: ", courses);
-  
+export default function GalleryTab({courses}: {courses: CourseWithUser[]}) {
   return (
     <div className="mt-20 min-h-[75vh] w-[90vw]">
       <CarouselComp />

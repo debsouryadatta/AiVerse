@@ -89,6 +89,11 @@ export default async function page({params: {slug}}: Props) {
       setRole("guest");
     }
   }, [])
+
+  if (!session?.data?.user) {
+    toast("You need to be logged in to see Profile.");
+    return router.push("/explore");
+  }
   
     
   return (
@@ -99,7 +104,7 @@ export default async function page({params: {slug}}: Props) {
           <TabsTrigger className="w-48" value="courses">Courses</TabsTrigger>
           <TabsTrigger className="w-48" value="posts">Posts</TabsTrigger>
         </TabsList>
-        <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="courses">
+        <TabsContent className="w-[350px] sm:w-[700px] lg:w-[1000px]" value="courses">
           <CoursesCreated />
         </TabsContent>
         <TabsContent className="w-[350px] sm:w-[500px] lg:w-[800px]" value="posts">

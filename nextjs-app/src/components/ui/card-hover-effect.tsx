@@ -123,12 +123,12 @@ export const HoverEffect = ({
 
         {page === "bookmark-page" && 
         <div className="mb-1 mt-[-5px] w-[95%] mx-auto">
-            <Button onClick={async() => deleteBookmark(item.bookmarkId!)} className="w-full h-8 bg-zinc-800 dark:bg-white"><Trash2 size={16} /><span className="mt-[0.5px]">Delete</span></Button>
+            <Button onClick={async() => deleteBookmark(item.bookmarkId!)} className="w-full h-8 bg-zinc-800 dark:bg-white dark:text-black"><Trash2 size={16} /><span className="mt-[0.5px]">Delete</span></Button>
         </div>
       }
         {(page === "profile-page" && session?.data?.user?.id === item?.user?.id) &&
         <div className="mb-1 mt-[-5px] w-[95%] mx-auto">
-            <Button onClick={async() => deleteCourse(item.id)} className="w-full h-8 bg-zinc-800 dark:bg-white"><Trash2 size={16} /><span className="mt-[0.5px]">Delete</span></Button>
+            <Button onClick={async() => deleteCourse(item.id)} className="w-full h-8 bg-zinc-800 dark:bg-white dark:text-black"><Trash2 size={16} /><span className="mt-[0.5px]">Delete</span></Button>
         </div>
       }
         </div>

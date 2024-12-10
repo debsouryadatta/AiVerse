@@ -1,25 +1,57 @@
-import Footer from "@/components/common/Footer";
-import { CardSection } from "@/components/landing/CardSection";
-import Hero from "@/components/landing/Hero";
+import { BenefitsSection } from "@/components/landing/layout/sections/benefits";
+import { FAQSection } from "@/components/landing/layout/sections/faq";
+import { FeaturesSection } from "@/components/landing/layout/sections/features";
+import { FooterSection } from "@/components/landing/layout/sections/footer";
+import { HeroSection } from "@/components/landing/layout/sections/hero";
+import { PricingSection } from "@/components/landing/layout/sections/pricing";
+import { SponsorsSection } from "@/components/landing/layout/sections/sponsors";
+import { Navbar } from "@/components/landing/layout/navbar";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-export default async function page() {
+export const metadata = {
+  title: "AiVerse",
+  description: "Unleash the Power of AI in Learning. Join the Community!",
+  openGraph: {
+    type: "website",
+    title: "AiVerse",
+    description: "Unleash the Power of AI in Learning. Join the Community!",
+    url: "https://aiverse.souryax.tech",
+    siteName: "AiVerse",
+    images: [{
+      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733779798/projects/aiverse-preview_nnpuqw.png",
+      width: 1200,
+      height: 630,
+      alt: "AiVerse Preview Image",
+    }],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AiVerse",
+    description: "Unleash the Power of AI in Learning. Join the Community!",
+    site: "https://aiverse.souryax.tech",
+    images: [{
+      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733779798/projects/aiverse-preview_nnpuqw.png",
+      alt: "AiVerse Preview Image",
+    }],
+  },
+};
+
+export default async function Home() {
   const session = await auth();
-  if (session?.user?.id) redirect("/gallery");
+  if (session?.user?.id) redirect("/explore");
 
   return (
-    <div className="bg-black">
-      <Hero />
-      <div className="mt-20 pb-20">
-        <h2 className="text-center mt-20 text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
-          Features
-        </h2>
-        <CardSection />
-      </div>
-      <Footer />
-    </div>
+    <>
+      <Navbar />
+      <HeroSection />
+      <SponsorsSection />
+      <BenefitsSection />
+      <FeaturesSection />
+      <PricingSection />
+      <FAQSection />
+      <FooterSection />
+    </>
   );
 }
-
-export const dynamic = "force-dynamic";

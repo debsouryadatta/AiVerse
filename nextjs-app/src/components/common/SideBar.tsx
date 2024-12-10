@@ -172,7 +172,7 @@ export function SideBar({children}: Readonly<{children: React.ReactNode;}>) {
               <SidebarLink
                 link={{
                   label: `${session?.data?.user?.name}`,
-                  href: "#",
+                  href: `/profile/${session?.data?.user?.id!}`,
                   icon: (
                     <Image
                       src={session?.data?.user?.image!}
@@ -208,7 +208,7 @@ export const Logo = () => {
         animate={{ opacity: 1 }}
         className="font-medium text-black dark:text-white whitespace-pre"
       >
-        CourseX
+        AiVerse
       </motion.span>
     </Link>
   );
@@ -217,7 +217,7 @@ export const LogoIcon = () => {
   const { theme } = useTheme();
   return (
     <Link
-      href="/gallery"
+      href="/explore"
       className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
     >
       <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />

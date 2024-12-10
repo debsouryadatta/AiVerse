@@ -2,9 +2,13 @@
 
 import { prisma } from "@/lib/db";
 
-export const getVoiceMentorsAction = async () => {
+export const getVoiceMentorsAction = async (userId: string) => {
     try {
-        const voicementors = await prisma.voiceMentor.findMany();
+        const voicementors = await prisma.voiceMentor.findMany({
+            where: {
+                userId: userId
+            }
+        });
         return voicementors;
     } catch (error) {
         console.log("Error", error);
