@@ -36,6 +36,9 @@ export const metadata = {
       alt: "AiVerse Preview Image",
     }],
   },
+  icons: {
+    shortcut: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1734098503/projects/aiverse-logo_mbtjg8.png",
+  }
 };
 
 export default async function Home() {

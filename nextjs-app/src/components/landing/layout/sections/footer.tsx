@@ -26,7 +26,7 @@ export const FooterSection = () => {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-700/20 to-violet-800/10 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-500" />
               {theme && (
                 <Image
-                src={theme === "dark"? "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758312/projects/aiverse-white_c76gwe.png" : "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758315/projects/aiverse-black_jb9goa.png"}
+                src={"https://res.cloudinary.com/diyxwdtjd/image/upload/v1734098503/projects/aiverse-logo_mbtjg8.png"}
                 alt="Logo"
                 width={80}
                 height={60}

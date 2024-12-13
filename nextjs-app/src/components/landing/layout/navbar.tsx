@@ -69,8 +69,8 @@ export const Navbar = () => {
         <div className="h-9 w-9 mr-2 relative">
           {theme && (
           <Image
-            src={theme === "dark"? "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758312/projects/aiverse-white_c76gwe.png" : "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758315/projects/aiverse-black_jb9goa.png"}
-            alt="CourseX Logo"
+            src={"https://res.cloudinary.com/diyxwdtjd/image/upload/v1734098503/projects/aiverse-logo_mbtjg8.png"}
+            alt="AiVerse Logo"
             fill
             className="object-contain"
           />
@@ -99,8 +99,8 @@ export const Navbar = () => {
                     <div className="h-9 w-9 mr-2 relative">
                     {theme && (
                       <Image
-                        src={theme === "dark"? "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758312/projects/aiverse-white_c76gwe.png" : "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758315/projects/aiverse-black_jb9goa.png"}
-                        alt="CourseX Logo"
+                        src={"https://res.cloudinary.com/diyxwdtjd/image/upload/v1734098503/projects/aiverse-logo_mbtjg8.png"}
+                        alt="AiVerse Logo"
                         fill
                         className="object-contain"
                       />

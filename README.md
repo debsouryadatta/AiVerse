@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/debsouryadatta/aiverse">
-    <img src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1733758312/projects/aiverse-white_c76gwe.png" alt="Logo" width="250" height="150">
+    <img src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1734098503/projects/aiverse-logo_mbtjg8.png" alt="Logo" width="250" height="250">
   </a>
 
   <h3 align="center">AiVerse</h3>

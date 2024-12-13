@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 
 enum PopularPlan {
@@ -75,9 +76,19 @@ export const PricingSection = () => {
         Choose Your Learning Plan
       </h2>
 
+      
       <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground pb-14">
         Get the credits you need to power your learning journey with our AI tools and features.
       </h3>
+
+      <div className="text-center mb-10 -mt-10">
+      <Badge variant="outline" className="text-sm py-2">
+            <span className="mr-2 text-primary">
+              <Badge>New Users</Badge>
+            </span>
+            <span> 2000 Free Credits  </span>
+          </Badge>
+      </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-4">
         {plans.map(
