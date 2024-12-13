@@ -11,7 +11,7 @@ import traceback
 
 load_dotenv()
 
-model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.1-70b-versatile")
+model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.3-70b-versatile")
 
 async def transcribe_audio(audio_file: UploadFile) -> str:
     url = "https://api.groq.com/openai/v1/audio/transcriptions"

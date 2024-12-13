@@ -1,4 +1,4 @@
-// import Banner from "@/components/explore/Banner";
+import Banner from "@/components/explore/Banner";
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostsList from "@/components/explore/PostsList";
@@ -45,7 +45,7 @@ export default async function page() {
 
   return (
     <div>
-      {/* <Banner /> */}
+      <Banner />
       <div className="flex flex-col items-center">
         <Tabs defaultValue="posts" className="mt-5 w-full max-w-2xl flex flex-col items-center">
           <TabsList className="bg-zinc-400 text-black dark:bg-zinc-800 dark:text-white w-96">

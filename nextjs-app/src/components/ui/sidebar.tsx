@@ -5,6 +5,7 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { signIn, signOut } from "next-auth/react";
+import { toast } from "sonner";
 
 interface Links {
   label: string;
@@ -176,6 +177,8 @@ export const SidebarLink = ({
             if (link.href === "/signIn") {
               await signIn("google");
             } else if (link.href === "/signOut") {
+              toast.success("Sign out successful");
+              await new Promise(resolve => setTimeout(resolve, 1000));
               await signOut();
             }
           }}

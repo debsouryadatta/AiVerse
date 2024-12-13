@@ -88,14 +88,4 @@
 - #20 - [[MOD]: Revamp the landing page of AiVerse, name change everywhere from "CourseX" -> "AiVerse", Add Preview image & url feature with html metatags](https://github.com/debsouryadatta/CourseX/issues/20) ✅
 
 
-Closes issue #20 , Revamped the landing page, name changed almost everywhere, added the preview image & url with metatags, and other minor changes
-
-
-
-
-
-- Should be able to generate 1-2 generations without login.
-
-
-
-There is some problem in the voice mentors page, idk why prisma fetches data even though userId is null or it might be the nature of prisma to fetch all posts when userId is null?
+Added new light but sleek banner component. Mic permission removed when the user is not using the voice mentor. Upgrading the llama 3.1-70b to llama 3.3-70b. And other minor changes

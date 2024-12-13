@@ -14,7 +14,7 @@
     AiVerse - Unleash the Power of AI in Learning. Join the Community!
     <br />
     <br />
-    <a href="https://aiverse.souryax.tech/">View Demo</a>
+    <a href="https://aiverse.souryax.tech/">View Site</a>
     ·
     <a href="https://github.com/debsouryadatta/aiverse/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
@@ -61,7 +61,10 @@ Built with modern technologies like Next.js, FastAPI, and LangChain, AiVerse is 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### AiVerse Demo
-Check out the live demo of AiVerse [here](https://aiverse.souryax.tech/).
+<p>Check out the live site of AiVerse here.</p>
+<a style="display: flex; justify-content: center;" href="https://aiverse.souryax.tech/">
+    <img src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1734083939/projects/Screenshot_2024-12-13_at_3.24.58_PM_nsld3o.png" alt="Logo" width="800" height="450">
+</a>
 
 ### Key Features
 - Explore Posts and Courses:

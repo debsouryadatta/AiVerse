@@ -157,7 +157,7 @@ export default function PostsList({posts}: {posts: ExplorePost[]}) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: index * 0.1 }}
-                  className="border-b border-border p-4 hover:bg-muted/50 transition-colors cursor-pointer bg-gray-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 w-[400px] sm:w-[600px] lg:w-[800px]"
+                  className="border-b border-border p-4 hover:bg-muted transition-colors cursor-pointer bg-gray-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 w-[400px] sm:w-[600px] lg:w-[800px]"
                   onClick={() => router.push(`/post/${post.id}`)}
                 >
                   <div className="flex gap-4">

@@ -8,7 +8,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 import requests
 load_dotenv()
 
-model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.1-70b-versatile")
+model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.3-70b-versatile")
 
 prompt3 = ChatPromptTemplate.from_template("""
     Please provide a detailed youtube search query for the topic {topic} that can be used to find an informative educational video. The query should give an educational informative course in youtube. The provided response should only contain a single search query and should not contain any other information.

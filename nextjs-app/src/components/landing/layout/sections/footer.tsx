@@ -12,7 +12,7 @@ export const FooterSection = () => {
   return (
     <footer id="footer" className="container py-16 relative">
       <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
-      <div className="p-10 bg-gradient-to-b from-background/95 to-background/60 backdrop-blur-xl border border-secondary/10 rounded-[2rem] shadow-[0_0_1rem_0_rgba(0,0,0,0.1)] relative overflow-hidden">
+      <div className="p-10 bg-gradient-to-b from-violet-300 dark:from-violet-950 dark:to-background/60 backdrop-blur-xl border border-secondary/10 rounded-[2rem] shadow-[0_0_1rem_0_rgba(0,0,0,0.1)] relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-primary/5" />
         <div className="absolute h-px w-full top-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -42,9 +42,9 @@ export const FooterSection = () => {
 
           <div className="flex gap-10">
             {[
-              { icon: Github, href: "https://github.com/yourusername" },
-              { icon: Twitter, href: "https://twitter.com/yourusername" },
-              { icon: Linkedin, href: "https://linkedin.com/in/yourusername" }
+              { icon: Github, href: "https://github.com/debsouryadatta" },
+              { icon: Twitter, href: "https://twitter.com/debsourya005" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/debsourya-datta-177909225" }
             ].map((social, index) => (
               <Link 
                 key={index}
@@ -61,7 +61,7 @@ export const FooterSection = () => {
           <Separator className="w-full bg-gradient-to-r from-transparent via-border to-transparent" />
           
           <p className="text-sm font-medium text-muted-foreground/80 tracking-wide">
-            © {new Date().getFullYear()} CourseX. All rights reserved.
+            © {new Date().getFullYear()} AiVerse. All rights reserved.
           </p>
         </div>
       </div>

@@ -7,7 +7,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 import requests
 load_dotenv()
 
-model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.1-70b-versatile")
+model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.3-70b-versatile")
 
 prompt5 = ChatPromptTemplate.from_template("""
     You are an AI capable of finding the most relevant image for a course.

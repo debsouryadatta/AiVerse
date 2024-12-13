@@ -8,7 +8,7 @@ from typing import List
 
 load_dotenv()
 
-model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.1-70b-versatile")
+model = ChatGroq(groq_api_key=os.environ["GROQ_API_KEY"], model_name="llama-3.3-70b-versatile")
 
 class Topic(BaseModel):
     title: str = Field(description="The title of the topic")

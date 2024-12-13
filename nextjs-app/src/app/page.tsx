@@ -19,7 +19,7 @@ export const metadata = {
     url: "https://aiverse.souryax.tech",
     siteName: "AiVerse",
     images: [{
-      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733779798/projects/aiverse-preview_nnpuqw.png",
+      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1734083939/projects/Screenshot_2024-12-13_at_3.24.58_PM_nsld3o.png",
       width: 1200,
       height: 630,
       alt: "AiVerse Preview Image",
@@ -32,7 +32,7 @@ export const metadata = {
     description: "Unleash the Power of AI in Learning. Join the Community!",
     site: "https://aiverse.souryax.tech",
     images: [{
-      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1733779798/projects/aiverse-preview_nnpuqw.png",
+      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1734083939/projects/Screenshot_2024-12-13_at_3.24.58_PM_nsld3o.png",
       alt: "AiVerse Preview Image",
     }],
   },

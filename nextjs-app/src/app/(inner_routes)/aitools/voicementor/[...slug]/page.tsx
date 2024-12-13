@@ -104,7 +104,23 @@ export default function Home({ params: { slug } }: Props) {
       }
     };
     getVoiceMentorDetails();
+
+    return () => {
+      cleanupMicPermissions();
+    }
   }, []);
+
+  const cleanupMicPermissions = () => {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+      stream.getTracks().forEach(track => {
+        track.stop();
+      });
+      })
+      .catch(err => console.log(err));
+    }
+  };
 
   const uploadAudio = (blob: Blob) => {
     const url = URL.createObjectURL(blob);
