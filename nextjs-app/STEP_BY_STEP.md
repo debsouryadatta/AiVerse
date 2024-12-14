@@ -87,3 +87,8 @@
 - #19 - [[FEAT]: Create a new ai tool, i.e. the voice mentor, set up the schema, create the backend endpoint for stt(groq-whisper), llm response(groq) stuff then the tts(deepgram) at the frontend, set up the credits reduction per 10sec of the voice mentor](https://github.com/debsouryadatta/CourseX/issues/19) ✅
 - #20 - [[MOD]: Revamp the landing page of AiVerse, name change everywhere from "CourseX" -> "AiVerse", Add Preview image & url feature with html metatags](https://github.com/debsouryadatta/CourseX/issues/20) ✅
 
+
+**v0.3 Done✅**
+
+- #21 - [[FEAT]: Add Beam Analytics to track the visits & usage of the website](https://github.com/debsouryadatta/AiVerse/issues/21) ✅
+
