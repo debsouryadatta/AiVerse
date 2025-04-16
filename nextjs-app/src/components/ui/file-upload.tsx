@@ -25,15 +25,25 @@ const secondaryVariant = {
   },
 };
 
+interface FileUploadProps {
+  onChange?: (files: File[]) => void;
+  accept?: string;
+  maxFiles?: number;
+}
+
 export const FileUpload = ({
   onChange,
-}: {
-  onChange?: (files: File[]) => void;
-}) => {
+  accept,
+  maxFiles = 0,
+}: FileUploadProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (newFiles: File[]) => {
+    if (maxFiles > 0 && newFiles.length > maxFiles) {
+      console.log(`Maximum ${maxFiles} files allowed`);
+      return;
+    }
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     onChange && onChange(newFiles);
   };
@@ -43,9 +53,11 @@ export const FileUpload = ({
   };
 
   const { getRootProps, isDragActive } = useDropzone({
-    multiple: false,
+    multiple: maxFiles !== 1,
     noClick: true,
     onDrop: handleFileChange,
+    accept: accept ? { [accept]: [] } : undefined,
+    maxFiles: maxFiles > 0 ? maxFiles : undefined,
     onDropRejected: (error) => {
       console.log(error);
     },
@@ -59,11 +71,17 @@ export const FileUpload = ({
         className="px-10 pb-5 group/file block rounded-lg cursor-pointer w-full relative overflow-hidden"
       >
         <input
-          ref={fileInputRef}
-          id="file-upload-handle"
           type="file"
-          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
+          ref={fileInputRef}
           className="hidden"
+          onChange={(e) => {
+            const files = e.target.files;
+            if (files) {
+              handleFileChange(Array.from(files));
+            }
+          }}
+          accept={accept}
+          multiple={maxFiles !== 1}
         />
         <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
           <GridPattern />

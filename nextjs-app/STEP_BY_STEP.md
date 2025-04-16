@@ -91,4 +91,6 @@
 **v0.3 Done✅**
 
 - #21 - [[FEAT]: Add Beam Analytics to track the visits & usage of the website](https://github.com/debsouryadatta/AiVerse/issues/21) ✅
+<!-- - #22 - [[MOD]] -->
+- #23 - [[FEAT]: Add rate limits to every routes to prevent abuse, using @upstash/ratelimit](https://github.com/debsouryadatta/AiVerse/issues/22) 
 

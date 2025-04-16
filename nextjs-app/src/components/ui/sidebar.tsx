@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, HTMLMotionProps } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { signIn, signOut } from "next-auth/react";
 import { toast } from "sonner";
@@ -72,11 +72,33 @@ export const Sidebar = ({
   );
 };
 
-export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
+export const SidebarBody = ({
+  children,
+  ...props
+}: React.ComponentPropsWithoutRef<"div"> & { children: React.ReactNode }) => {
+  const { open } = useSidebar();
   return (
     <>
-      <DesktopSidebar {...props} />
-      <MobileSidebar {...(props as React.ComponentProps<"div">)} />
+      <DesktopSidebar {...props}>
+        <div
+          className={cn(
+            "flex flex-col h-full",
+            open ? "p-2" : "p-0 -mt-6"
+          )}
+        >
+          {children}
+        </div>
+      </DesktopSidebar>
+      <MobileSidebar {...props}>
+        <div
+          className={cn(
+            "flex flex-col h-full",
+            open ? "p-2" : "p-0 pt-1"
+          )}
+        >
+          {children}
+        </div>
+      </MobileSidebar>
     </>
   );
 };
@@ -85,24 +107,40 @@ export const DesktopSidebar = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof motion.div>) => {
+}: React.HTMLAttributes<HTMLDivElement>) => {
   const { open, setOpen, animate } = useSidebar();
   return (
     <>
-      <motion.div
+      <div
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] flex-shrink-0",
+          "h-full px-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-neutral-900 flex-shrink-0 relative transition-all duration-300 border-r border-gray-200 dark:border-neutral-800 shadow-sm",
+          open ? "py-4 w-[250px]" : "pt-2 pb-0 w-[70px]",
           className
         )}
-        animate={{
-          width: animate ? (open ? "300px" : "60px") : "300px",
-        }}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
         {...props}
       >
+        <div className={cn(
+          "cursor-pointer z-10 rounded-full p-1.5 hover:bg-gray-200 dark:hover:bg-neutral-800 transition-all",
+          open ? "absolute top-[26px] right-4" : "flex justify-center w-full mb-0 mt-4"
+        )}>
+          {open ? (
+            <IconMenu2
+              className="text-neutral-600 dark:text-neutral-300" 
+              onClick={() => setOpen(false)} 
+              size={18}
+              stroke={2}
+            />
+          ) : (
+            <IconMenu2 
+              className="text-neutral-600 dark:text-neutral-300" 
+              onClick={() => setOpen(true)} 
+              size={18}
+              stroke={2}
+            />
+          )}
+        </div>
         {children}
-      </motion.div>
+      </div>
     </>
   );
 };
@@ -111,15 +149,14 @@ export const MobileSidebar = ({
   className,
   children,
   ...props
-}: React.ComponentProps<"div">) => {
+}: React.HTMLAttributes<HTMLDivElement> & { children: React.ReactNode }) => {
   const { open, setOpen } = useSidebar();
   return (
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
+          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
         )}
-        {...props}
       >
         <div className="flex justify-end z-20 w-full">
           <IconMenu2
@@ -148,7 +185,9 @@ export const MobileSidebar = ({
               >
                 <IconX />
               </div>
-              {children}
+              <div className="flex flex-col h-full">
+                {children}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -183,52 +222,40 @@ export const SidebarLink = ({
             }
           }}
           className={cn(
-            "flex items-center justify-start gap-2  group/sidebar py-2",
+            "flex items-center justify-start gap-3 py-2.5 px-2 rounded-md transition-all hover:bg-gray-200 dark:hover:bg-neutral-800",
             className
           )}
           {...props}
         >
-          {link.icon}
+          <div className="flex-shrink-0 flex items-center justify-center">
+            {link.icon}
+          </div>
 
-          <motion.span
-            animate={{
-              display: animate
-                ? open
-                  ? "inline-block"
-                  : "none"
-                : "inline-block",
-              opacity: animate ? (open ? 1 : 0) : 1,
-            }}
-            className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-          >
-            {link.label}
-          </motion.span>
+          {open && (
+            <span className="text-neutral-700 dark:text-neutral-300 text-sm font-medium whitespace-pre inline-block !p-0 !m-0">
+              {link.label}
+            </span>
+          )}
         </button>
       ) : (
         <Link
           onClick={() => setOpen && setOpen(false)}
           href={link.href}
           className={cn(
-            "flex items-center justify-start gap-2  group/sidebar py-2",
+            "flex items-center justify-start gap-3 py-2.5 px-2 rounded-md transition-all hover:bg-gray-200 dark:hover:bg-neutral-800",
             className
           )}
           {...props}
         >
-          {link.icon}
+          <div className="flex-shrink-0 flex items-center justify-center">
+            {link.icon}
+          </div>
 
-          <motion.span
-            animate={{
-              display: animate
-                ? open
-                  ? "inline-block"
-                  : "none"
-                : "inline-block",
-              opacity: animate ? (open ? 1 : 0) : 1,
-            }}
-            className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-          >
-            {link.label}
-          </motion.span>
+          {open && (
+            <span className="text-neutral-700 dark:text-neutral-300 text-sm font-medium whitespace-pre inline-block !p-0 !m-0">
+              {link.label}
+            </span>
+          )}
         </Link>
       )}
     </>

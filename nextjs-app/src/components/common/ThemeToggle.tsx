@@ -8,7 +8,7 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <button className="ml-2" onClick={() => {
+    <button className="" onClick={() => {
       if(theme && theme === 'dark') {
         setTheme('light')
       } else if(theme && theme === 'light') {
@@ -16,9 +16,9 @@ export function ThemeToggle() {
       }
     }}>
       {theme === 'dark' ? (
-        <Sun className="h-7 w-7" />
+        <Sun className="h-5 w-5" />
       ) : (
-        <Moon className="h-7 w-7" />
+        <Moon className="h-5 w-5" />
       )}
     </button>
   )
