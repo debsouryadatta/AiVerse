@@ -4,7 +4,7 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
-from youtube_transcript_api import YouTubeTranscriptApi
+from app.lib.fetch_transcript import fetch_transcript
 import requests
 load_dotenv()
 
@@ -41,8 +41,8 @@ async def get_youtube_video_id(youtube_query: str):
 
 async def get_transcript(video_id: str):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        return ' '.join([t['text'] for t in transcript]).replace('\n', '')
+        transcript = fetch_transcript(video_id)
+        return transcript
     except Exception as e:
         print(f"Error fetching transcript: {e}")
         return ""
