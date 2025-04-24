@@ -11,3 +11,5 @@ youtube-transcript-api>=0.6.2
 requests>=2.32.3
 langchain-groq>=0.1.9
 python-multipart>=0.0.9
+google-api-python-client>=2.167.0
+protobuf>=6.30.2

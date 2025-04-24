@@ -28,10 +28,13 @@ async def generate_image_search_term(course_title: str):
     return result['imageSearchTerm']
 
 async def get_unsplash_image(query: str):
-    url = f"https://api.unsplash.com/search/photos?per_page=1&query={query}&client_id={os.getenv('UNSPLASH_API_KEY')}&w=1080&h=600"
-    response = requests.get(url)
+    url = f"https://api.pexels.com/v1/search?query={query}&per_page=1"
+    headers = {
+        "Authorization": os.getenv('PEXELS_API_KEY')
+    }
+    response = requests.get(url, headers=headers)
     data = response.json()
-    return data['results'][0]['urls']['small_s3']
+    return data['photos'][0]['src']['medium']
 
 async def generate_course_image(course_title: str):
     image_search_term = await generate_image_search_term(course_title)
