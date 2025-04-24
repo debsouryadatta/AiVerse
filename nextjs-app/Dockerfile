@@ -1,5 +1,9 @@
 FROM node:18-slim AS base
 
+# Install OpenSSL early in your Dockerfile
+RUN apt-get update -y
+RUN apt-get install -y openssl
+
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /app

@@ -91,4 +91,6 @@
 **v0.3 Done✅**
 
 - #21 - [[FEAT]: Add Beam Analytics to track the visits & usage of the website](https://github.com/debsouryadatta/AiVerse/issues/21) ✅
-
+- #22 - [[FEAT]: Add rate limits to every routes to prevent abuse, using @upstash/ratelimit](https://github.com/debsouryadatta/AiVerse/issues/22)
+- #23 - [[BUG]: Fix the bug in fetching the YT video transcripts and also modify the llm model for generations from llama3.1 to qwen-qwq-32b](https://github.com/debsouryadatta/AiVerse/issues/23)
+- #24 - [[BUG]: Fix the bug in the docker logs causing maybe due to some node version errors inside docker](https://github.com/debsouryadatta/AiVerse/issues/24)
