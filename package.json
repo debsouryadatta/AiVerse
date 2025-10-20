@@ -14,7 +14,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@langchain/core": "^0.2.18",
     "@langchain/groq": "^0.0.13",
-    "@prisma/client": "6.0.1",
+    "@prisma/client": "6.17.1",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-collapsible": "^1.1.1",
@@ -74,7 +74,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.5",
     "postcss": "^8.4.40",
-    "prisma": "^6.0.1",
+    "prisma": "6.17.1",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4"
   }

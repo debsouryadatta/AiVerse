@@ -1,26 +1,9 @@
-version: '3'
 services:
-  fastapi-app:
-    build:
-      context: ./fastapi-app
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    networks:
-      - "aiverse"
-
   nextjs-app:
-    depends_on:
-      - fastapi-app
     build:
-      context: ./nextjs-app
+      context: .
       dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
     ports:
       - "3000:3000"
-    networks:
-      - "aiverse"
-
-
-networks:
-  aiverse:
-    driver: bridge

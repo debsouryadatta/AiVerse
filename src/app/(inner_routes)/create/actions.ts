@@ -2,25 +2,11 @@
 
 import { getPhotoUrl } from "@/lib/cloudinary";
 import { prisma } from "@/lib/db";
-import { Chapter } from "@/types";
-import axios from "axios";
+import { generateChapterOptimized, generateChaptersOptimized, generateCourseDescription, generateCourseImage } from "@/lib/generate";
 import { nanoid } from 'nanoid';
 
-const FASTAPI_BASE_URL = process.env.FASTAPI_BASE_URL as string;
-
-export async function generateChapters(chapters: { id: number, title: string }[]) {
-  let genChapters = [];
-  try {
-    for (const chapter of chapters) {
-      let res: Chapter = (await axios.get(`${FASTAPI_BASE_URL}/generate/course/chapter/${chapter.title}`)).data;
-      genChapters.push(res);
-    }
-    console.log("Generated Chapters", genChapters);
-    return genChapters;
-  } catch (error) {
-    console.log("Error", error);
-    throw error;
-  }
+export async function generateChapters(chapters: { id: number, title: string }[], courseTitle: string) {
+  return await generateChaptersOptimized(chapters, courseTitle);
 }
 
 
@@ -42,16 +28,22 @@ export async function generateCourse(chapters: { id: number, title: string }[], 
       throw new Error("Not enough credits");
     }
 
-    let generatedChapters: Chapter[] = await generateChapters(chapters);
-    let description: string = (await axios.get(`${FASTAPI_BASE_URL}/generate/course/description/${courseTitle}`)).data;
+    // Generate all chapters with optimized single LLM call per chapter
+    let generatedChapters = await generateChaptersOptimized(chapters, courseTitle);
+    
+    // Generate course description if not provided
+    let description: string = await generateCourseDescription(courseTitle);
+    
+    // Generate course image if not provided
     if (imageUrl === "") {
-      imageUrl = (await axios.get(`${FASTAPI_BASE_URL}/generate/course/image/${courseTitle}`)).data;
+      imageUrl = await generateCourseImage(courseTitle);
     }
-    let mcqs = (await axios.post(`${FASTAPI_BASE_URL}/generate/course/chapter/mcq`, { chapters: generatedChapters })).data;
+    
+    // Extract MCQs from generated chapters
+    let mcqs = generatedChapters.map(chapter => chapter.mcqs);
     console.log("Generated mcqs: ---------------------------------------------------------", mcqs);
 
     let inviteCode = nanoid(10);
-
 
     const response = await prisma.course.create({
       data: {

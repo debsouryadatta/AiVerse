@@ -1,10 +1,10 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Link, { LinkProps } from "next/link";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface Links {
@@ -166,9 +166,26 @@ export const SidebarLink = ({
   link: Links;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
-  props?: LinkProps;
+  props?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }) => {
   const { open, animate } = useSidebar();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleNavigation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    // Close sidebar immediately without waiting
+    if (setOpen) {
+      setOpen(false);
+    }
+
+    // Navigate immediately and non-blocking
+    startTransition(() => {
+      router.push(link.href);
+    });
+  };
+
   return (
     <>
       {link.href === "/signIn" || link.href === "/signOut" ? (
@@ -205,11 +222,10 @@ export const SidebarLink = ({
           </motion.span>
         </button>
       ) : (
-        <Link
-          onClick={() => setOpen && setOpen(false)}
-          href={link.href}
+        <button
+          onClick={handleNavigation}
           className={cn(
-            "flex items-center justify-start gap-2  group/sidebar py-2",
+            "flex items-center justify-start gap-2  group/sidebar py-2 text-left w-full",
             className
           )}
           {...props}
@@ -229,7 +245,7 @@ export const SidebarLink = ({
           >
             {link.label}
           </motion.span>
-        </Link>
+        </button>
       )}
     </>
   );
