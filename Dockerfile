@@ -7,20 +7,29 @@ RUN apt-get install -y openssl
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN corepack enable npm && npm install --frozen-lockfile
+
+# Enable pnpm
+RUN corepack enable pnpm
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build the application
 FROM base AS builder
 WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable pnpm
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN corepack enable npm && npm run build
+RUN pnpm run build
 
 # Stage 3: Production server
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
