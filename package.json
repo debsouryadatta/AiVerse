@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node src/server/index.ts",
     "build": "npx prisma generate && next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node src/server/index.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
@@ -64,6 +64,7 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.1",
+    "ws": "^8.18.3",
     "youtube-transcript": "^1.2.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
@@ -73,6 +74,7 @@
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.5",
+    "@types/ws": "^8.18.1",
     "postcss": "^8.4.40",
     "prisma": "6.17.1",
     "tailwindcss": "^3.4.7",

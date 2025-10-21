@@ -6,6 +6,7 @@ import { z } from "zod";
 import { StructuredOutputParser } from "langchain/output_parsers";
 import { YoutubeTranscript } from "youtube-transcript";
 import axios from "axios";
+import { Question } from "@/types/games";
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -412,4 +413,52 @@ async function transcribeAudio(file: File) {
 
   const data = await response.json();
   return data.text || 'Transcription failed or no text returned.';
+}
+
+// ============================================================================
+// QUIZ GENERATION
+// ============================================================================
+export async function generateCourseQuiz(
+  courseTitle: string,
+  content: string,
+  difficulty: 'easy' | 'medium' | 'hard' = 'medium'
+): Promise<Question[]> {
+  const count = difficulty === 'easy' ? 5 : difficulty === 'medium' ? 10 : 15;
+  
+  const outputParser = StructuredOutputParser.fromZodSchema(
+    z.object({
+      questions: z
+        .array(
+          z.object({
+            question: z.string().describe("The quiz question"),
+            options: z.array(z.string()).describe("Array of 4 answer options"),
+            correctAnswer: z.number().describe("Index of the correct answer (0-3)"),
+            explanation: z.string().describe("Explanation of the correct answer"),
+          })
+        )
+        .describe(`Array of ${count} quiz questions`),
+    })
+  );
+
+  const prompt = ChatPromptTemplate.fromTemplate(`
+    You are an expert quiz creator. Generate ${count} quiz questions about: {courseTitle}
+    
+    Course Content: {content}
+    
+    Create clear, educational quiz questions with 4 options each and include explanations.
+    Difficulty level: {difficulty}
+    
+    Formatting Instructions: {format_instructions}
+  `);
+
+  const chain = prompt.pipe(model).pipe(outputParser);
+
+  const res = await chain.invoke({
+    courseTitle: courseTitle,
+    content: content,
+    difficulty: difficulty,
+    format_instructions: outputParser.getFormatInstructions(),
+  });
+
+  return res.questions;
 }

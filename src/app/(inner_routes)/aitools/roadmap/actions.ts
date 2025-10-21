@@ -2,10 +2,8 @@
 
 import { prisma } from "@/lib/db";
 import { Roadmap } from "@/types/roadmap";
-import axios from "axios";
+import { generateRoadmap } from "@/lib/generate";
 import { revalidatePath } from "next/cache";
-
-const FASTAPI_BASE_URL = process.env.FASTAPI_BASE_URL as string;
 
 export const generateRoadmapAction = async (roadmapTitle: string, userId: string) => {
     try {
@@ -23,7 +21,7 @@ export const generateRoadmapAction = async (roadmapTitle: string, userId: string
         if (userCredits.credits < 25) {
           throw new Error("Not enough credits");
         }
-        let response = (await axios.get(`${FASTAPI_BASE_URL}/generate/roadmap/${roadmapTitle}`)).data;
+        let response = await generateRoadmap(roadmapTitle);
         // Decrement credits
           await prisma.user.update({
               where: {

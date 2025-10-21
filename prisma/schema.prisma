@@ -9,29 +9,28 @@ datasource db {
 
 model User {
   id            String          @id @default(cuid())
-  name          String?
+  createdAt     DateTime        @default(now())
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  name          String?
+  updatedAt     DateTime        @updatedAt
   bio           String?         @default("Update bio")
-  credits       Int             @default(2000)  // Default to hobby tier credits
+  credits       Int             @default(2000)
   accounts      Account[]
-  sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
+  bookmarks     Bookmark[]
+  comments      Comment[]
+  courses       Course[]
+  followers     Follow[]        @relation("UserFollowers")
+  following     Follow[]        @relation("UserFollowing")
+  gameScores    GameScore[]
+  likes         Like[]
+  posts         Post[]
+  roadmaps      Roadmap[]
+  sessions      Session[]
+  purchases     UserPurchase[]
   VoiceMentor   VoiceMentor[]
-
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  courses   Course[]
-  likes     Like[]
-  comments  Comment[]
-  bookmarks Bookmark[]
-  followers Follow[]   @relation("UserFollowers")
-  following Follow[]   @relation("UserFollowing")
-  roadmaps   Roadmap[]
-  posts      Post[]
-  purchases  UserPurchase[]
 }
 
 model Account {
@@ -46,11 +45,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -59,10 +56,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -73,7 +69,6 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
-// Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -83,8 +78,7 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
 }
@@ -94,33 +88,34 @@ model Course {
   title       String
   image       String
   description String
-  units       Chapter[]
   userId      String
-  visibility  String     @default("public")
   inviteCode  String?    @unique
+  visibility  String     @default("public")
   mcqs        Json?
-  likes       Like[]
-  comments    Comment[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  featured    Boolean    @default(false)
   bookmarks   Bookmark[]
+  units       Chapter[]
+  comments    Comment[]
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes       Like[]
 
-  @@index([userId], name: "userId")
+  @@index([userId], map: "userId")
 }
 
 model Chapter {
-  id       String @id @default(cuid())
-  courseId String
-
-  title                String
+  id                   String   @id @default(cuid())
+  courseId             String
   subtopics            String[]
   subtopicExplanations String[]
+  youtubeSearchQuery   String
+  videoId              String?
+  summary              String?  @db.VarChar(3000)
+  title                String
+  course               Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  youtubeSearchQuery String
-  videoId            String?
-  summary            String? @db.VarChar(3000)
-  course             Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@index([courseId], name: "courseId")
+  @@index([courseId], map: "courseId")
 }
 
 model Like {
@@ -128,9 +123,9 @@ model Like {
   userId   String
   courseId String?
   postId   String?
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
   post     Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId], name: "unique_course_like")
   @@unique([userId, postId], name: "unique_post_like")
@@ -140,15 +135,15 @@ model Like {
 }
 
 model Comment {
-  id       String  @id @default(cuid())
-  userId   String
-  courseId String?
-  postId   String?
-  text     String
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  post     Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String?
+  text      String
   createdAt DateTime @default(now())
+  postId    String?
+  course    Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([courseId])
@@ -159,11 +154,11 @@ model Bookmark {
   id        String   @id @default(cuid())
   userId    String
   courseId  String?
+  createdAt DateTime @default(now())
   postId    String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   course    Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId], name: "unique_course_bookmark")
   @@unique([userId, postId], name: "unique_post_bookmark")
@@ -173,24 +168,21 @@ model Bookmark {
 }
 
 model Post {
-  id          String     @id @default(cuid())
-  userId      String
-  caption     String?
-  mediaUrl    String     // URL for image or video
-  mediaType   String     // "image" or "video"
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  likes       Like[]
-  comments    Comment[]
-  bookmarks   Bookmark[]
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String     @id @default(cuid())
+  userId    String
+  caption   String?
+  mediaUrl  String
+  mediaType String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  bookmarks Bookmark[]
+  comments  Comment[]
+  likes     Like[]
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
-// Follower -> The one who follows
-// Following -> The one who is followed
-// Eg: I followed my friend, then I am the follower and my friend is the following
 model Follow {
   id          String @id @default(cuid())
   followerId  String
@@ -202,41 +194,60 @@ model Follow {
 }
 
 model Roadmap {
-  id          String @id @default(cuid())
-  userId      String
-  title       String
-  roadmap     Json
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String @id @default(cuid())
+  userId  String
+  title   String
+  roadmap Json
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId], name: "userId5")
+  @@index([userId], map: "userId5")
 }
 
 model UserPurchase {
-  id            String   @id @default(cuid())
-  userId        String
-  creditsAmount Int      // Number of credits purchased
-  amount        Float    // Amount paid in currency
-  currency      String   @default("USD")
-  status        String   // e.g., "succeeded", "failed", "refunded"
-  stripePaymentIntentId String  // Stripe Payment Intent ID
-  stripePaymentIntentStatus String // Stripe Payment Intent Status
-  createdAt     DateTime @default(now())
-  user          User     @relation(fields: [userId], references: [id])
+  id                        String   @id @default(cuid())
+  userId                    String
+  creditsAmount             Int
+  amount                    Float
+  currency                  String   @default("USD")
+  status                    String
+  stripePaymentIntentId     String
+  stripePaymentIntentStatus String
+  createdAt                 DateTime @default(now())
+  user                      User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model VoiceMentor {
-  id           String   @id @default(cuid())
-  name         String
-  description  String   @db.Text
-  voiceId      String
-  chatHistory  Json[]   @default([]) // Array of chat messages
-  lastUsed     DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  userId       String   // Foreign key to User
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  lastUsed    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  voiceId     String
+  chatHistory Json[]   @default([])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model GameScore {
+  id             String   @id @default(cuid())
+  userId         String
+  courseId       String?
+  score          Int
+  totalQuestions Int?
+  correctAnswers Int?
+  timeSpent      Int?
+  difficulty     String   @default("medium")
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  quizType       String   @default("quick-solo")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([quizType])
+  @@index([createdAt])
 }

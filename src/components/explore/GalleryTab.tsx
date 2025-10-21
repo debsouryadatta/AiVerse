@@ -4,10 +4,10 @@ import { CourseWithUser } from "@/types";
 
 
 
-export default function GalleryTab({courses}: {courses: CourseWithUser[]}) {
+export default function GalleryTab({courses, featuredCourses}: {courses: CourseWithUser[], featuredCourses: CourseWithUser[]}) {
   return (
     <div className="mt-20 min-h-[75vh] w-[90vw]">
-      <CarouselComp />
+      <CarouselComp featuredCourses={featuredCourses} />
       {courses?.length === 0 && <h1 className="mt-52 text-center text-2xl font-bold">No Courses Available!</h1>}
       <Gallery courses={courses} />
     </div>

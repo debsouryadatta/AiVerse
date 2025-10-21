@@ -2,9 +2,6 @@
 
 import { getVoiceChatResponse } from "@/lib/generate";
 import { prisma } from "@/lib/db";
-import axios from "axios";
-
-const FASTAPI_BASE_URL = process.env.FASTAPI_BASE_URL as string;
 
 export const transcript = async (prevState: any, formData: FormData) => {
   const messages = JSON.parse(formData.get("messages") as string);
@@ -19,12 +16,7 @@ export const transcript = async (prevState: any, formData: FormData) => {
   console.log(">>", file);
 
 
-  // const { response, input } = await getVoiceChatResponse(messages, file, voiceMentorDescription);
-  const { response, input} = (await axios.post(`${FASTAPI_BASE_URL}/get/voice_chat_response`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })).data;
+  const { response, input } = await getVoiceChatResponse(messages, file, voiceMentorDescription);
 
   const id = Math.random().toString(36);
   return {
