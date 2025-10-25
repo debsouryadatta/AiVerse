@@ -12,7 +12,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const model = new ChatGroq({
-  apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
+  apiKey: process.env.GROQ_API_KEY,
   modelName: "openai/gpt-oss-120b",
 });
 
@@ -191,7 +191,7 @@ export async function generateChaptersOptimized(
 async function getYoutubeVideoId(youtubeQuery: string) {
   let searchQuery = encodeURIComponent(youtubeQuery);
   const { data } = await axios.get(
-    `https://www.googleapis.com/youtube/v3/search?key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}&q=${searchQuery}&videoDuration=medium&videoEmbeddable=true&type=video&maxResults=5`
+    `https://www.googleapis.com/youtube/v3/search?key=${process.env.YOUTUBE_API_KEY}&q=${searchQuery}&videoDuration=medium&videoEmbeddable=true&type=video&maxResults=5`
   );
   if (!data || data.items[0] === undefined) {
     console.log("YouTube video not found");
@@ -402,7 +402,7 @@ async function transcribeAudio(file: File) {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GROQ_API_KEY}`,
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
     },
     body: formData,
   });

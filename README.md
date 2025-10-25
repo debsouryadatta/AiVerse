@@ -56,7 +56,7 @@ AiVerse is an AI-powered learning platform cum community that makes learning sma
 
 Whether you're creating AI-generated courses, following custom learning roadmaps, or interacting with voice mentors, AiVerse provides the tools you need to learn effectively. With our credits system, you can access premium features while engaging with a vibrant community of learners.
 
-Built with modern technologies like Next.js, FastAPI, and LangChain, AiVerse is designed to make learning more accessible and interactive for everyone.
+Built with modern technologies like Next.js and LangChain, AiVerse is designed to make learning more accessible and interactive for everyone.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -67,10 +67,12 @@ Built with modern technologies like Next.js, FastAPI, and LangChain, AiVerse is 
 </a>
 
 ### Key Features
-- Explore Posts and Courses:
+- Explore Posts, Courses and Quizzes:
   - Browse and discover a vast collection of user generated courses
   - Explore the user created posts and learn from others
-  - Upcoming features: Explore blogs posts, quizzes, and more
+  - Interactive games and solo quizzes for practice
+  - Leaderboard system to track top performers
+  - Upcoming features: Multiplayer quizzes, and more
 
 - Generate Courses:
   - Create courses with AI-powered content generation
@@ -124,8 +126,8 @@ Built with modern technologies like Next.js, FastAPI, and LangChain, AiVerse is 
   - Profile management with Cloudinary image upload
 
 - Technical Features:
-  - Separate FastAPI service for AI operations
-  - Docker containerization
+  - Nextjs Server Actions and API routes for AI operations
+  - Docker containerization with pnpm support
   - CI/CD pipeline with GitHub Actions
   - Database management with Prisma and PostgreSQL
 
@@ -136,7 +138,6 @@ Built with modern technologies like Next.js, FastAPI, and LangChain, AiVerse is 
   - Typescript
   - Prisma (ORM)
   - PostgreSQL (Database)
-  - FastAPI (Python framework for ai operations)
   - LangChain (LLM framework)
 
 
@@ -165,8 +166,7 @@ Built with modern technologies like Next.js, FastAPI, and LangChain, AiVerse is 
 
 ### Prerequisites
 - Node.js (v18 or higher)
-- npm
-- Python 3.8+
+- npm or pnpm
 - Docker (optional)
 - PostgreSQL
 
@@ -178,81 +178,71 @@ cd aiverse
 
 ### Installation
 
-1. Install frontend dependencies:
+1. Install dependencies using npm or pnpm:
 ```bash
-cd nextjs-app
 npm install
-```
-
-2. Install backend dependencies:
-```bash
-cd ../fastapi-app
-pip install -r requirements.txt
+# or
+pnpm install
 ```
 
 ### Set Up Environment Variables
 
-1. Frontend (.env):
+Create a `.env.local` file in the root directory:
 ```plaintext
-# Next Auth
-AUTH_SECRET=your-secret-key
-AUTH_GOOGLE_ID=your-google-id
-AUTH_GOOGLE_SECRET=your-google-secret
-AUTH_URL=http://localhost:3000
+# Database & Base URL
+DATABASE_URL=
+NEXTJS_BASE_URL=
 
-# Database
-DATABASE_URL=your-postgresql-url
+# Next AUth
+AUTH_SECRET=
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
+AUTH_URL=
 
-# APIs
-CLOUDINARY_CLOUD_NAME=your-cloudinary-name
-CLOUDINARY_API_KEY=your-cloudinary-key
-CLOUDINARY_API_SECRET=your-cloudinary-secret
-CLOUDINARY_UPLOAD_PRESET=your-cloudinary-preset
-CLOUDINARY_FOLDER=your-cloudinary-folder
+# Groq API
+GROQ_API_KEY=
+
+# Langchain API for langsmith
+LANGCHAIN_TRACING_V2=
+LANGCHAIN_ENDPOINT=
+LANGCHAIN_API_KEY=
+LANGCHAIN_PROJECT=
+LANGCHAIN_CALLBACKS_BACKGROUND=
+
+# Youtube & Unsplash API
+YOUTUBE_API_KEY=
+UNSPLASH_API_KEY=
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_UPLOAD_PRESET=
+CLOUDINARY_FOLDER=
 
 # Stripe
-STRIPE_SECRET_KEY=your-stripe-secret
-STRIPE_WEBHOOK_SECRET=your-webhook-secret
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 
 # Deepgram
-NEXT_PUBLIC_DEEPGRAM_API_KEY=your-deepgram-api-key
-NEXT_PUBLIC_GROQ_API_KEY=your-groq-api-key
+NEXT_PUBLIC_DEEPGRAM_API_KEY=
 
-# Base URLs
-NEXTJS_BASE_URL=http://localhost:3000
-FASTAPI_BASE_URL=http://localhost:8000
-```
-
-2. Backend (.env):
-```plaintext
-# Groq API/Youtube API/Unsplash API
-GROQ_API_KEY=your-groq-api-key
-YOUTUBE_API_KEY=your-youtube-api-key
-UNSPLASH_API_KEY=your-unsplash-api-key
-
-# Langchain API for langsmith [Optional]
-LANGCHAIN_TRACING_V2=your-langchain-tracing-v2
-LANGCHAIN_ENDPOINT=your-langchain-endpoint
-LANGCHAIN_API_KEY=your-langchain-api-key
-LANGCHAIN_PROJECT=your-langchain-project
-LANGCHAIN_CALLBACKS_BACKGROUND=your-langchain-callbacks-background
+# Beam Analytics
+NEXT_PUBLIC_BEAM_TOKEN=
 ```
 
 ### Running the Project
 
-1. Start the frontend:
+1. Start the development server:
 ```bash
-cd nextjs-app
 npm run dev
+# or
+pnpm dev
 ```
 
-2. Start the backend:
-```bash
-cd fastapi-app
-python3 main.py
-```
+The application will be available at `http://localhost:3000`
 
-### Running the Project with Docker
+2. (Optional) Run with Docker:
 ```bash
 docker-compose up --build
 ```
@@ -283,7 +273,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-Debsourya Datta - [LinkedIn Profile](https://www.linkedin.com/in/debsourya-datta-177909225) - debsouryadatta@gmail.com
+Debsourya Datta - [X Profile](https://x.com/debsourya005) - debsouryadatta@gmail.com
 
 Project Link: [https://github.com/debsouryadatta/aiverse](https://github.com/debsouryadatta/aiverse)
 
